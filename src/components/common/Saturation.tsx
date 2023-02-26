@@ -1,4 +1,3 @@
-import React from "react";
 import { Interactive, Interaction } from "./Interactive";
 import { Pointer } from "./Pointer";
 import { HsvaColor } from "../../types";
@@ -32,7 +31,7 @@ const SaturationBase = ({ hsva, onChange }: Props) => {
   };
 
   return (
-    <div className="react-colorful__saturation" style={containerStyle}>
+    <div class="react-colorful__saturation" style={containerStyle}>
       <Interactive
         onMove={handleMove}
         onKey={handleKey}
@@ -40,7 +39,7 @@ const SaturationBase = ({ hsva, onChange }: Props) => {
         aria-valuetext={`Saturation ${round(hsva.s)}%, Brightness ${round(hsva.v)}%`}
       >
         <Pointer
-          className="react-colorful__saturation-pointer"
+          class="react-colorful__saturation-pointer"
           top={1 - hsva.v / 100}
           left={hsva.s / 100}
           color={hsvaToHslString(hsva)}
@@ -50,4 +49,5 @@ const SaturationBase = ({ hsva, onChange }: Props) => {
   );
 };
 
-export const Saturation = React.memo(SaturationBase);
+// export const Saturation = React.memo(SaturationBase);
+export const Saturation = SaturationBase;

@@ -1,13 +1,15 @@
 {
   "compilerOptions": {
+    "strict": true,
     "target": "ESNext",
     "module": "ESNext",
-    "esModuleInterop": true,
-    "jsx": "react",
-    "jsxFactory": "React.createElement",
     "moduleResolution": "node",
-    "declaration": true,
-    "strict": true
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "jsx": "preserve",
+    "jsxImportSource": "solid-js",
+    "noEmit": true,
+    "isolatedModules": true,
   },
   "include": ["./src/**/*", "./test/**/*", "./demo/src/**/*"]
 }

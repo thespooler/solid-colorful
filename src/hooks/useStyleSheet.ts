@@ -1,19 +1,17 @@
-import { RefObject } from "react";
-
-import { useIsomorphicLayoutEffect } from "./useIsomorphicLayoutEffect";
 import { getNonce } from "../utils/nonce";
 
 // Bundler is configured to load this as a processed minified CSS-string
 import styles from "../css/styles.css";
+import { createEffect } from "solid-js";
 
 const styleElementMap: Map<Document, HTMLStyleElement> = new Map();
 
 /**
  * Injects CSS code into the document's <head>
  */
-export const useStyleSheet = (nodeRef: RefObject<HTMLDivElement>): void => {
-  useIsomorphicLayoutEffect(() => {
-    const parentDocument = nodeRef.current ? nodeRef.current.ownerDocument : document;
+export const useStyleSheet = (nodeRef: HTMLDivElement): void => {
+  createEffect(() => {
+    const parentDocument = nodeRef ? nodeRef.ownerDocument : document;
 
     if (typeof parentDocument !== "undefined" && !styleElementMap.has(parentDocument)) {
       const styleElement = parentDocument.createElement("style");
@@ -26,5 +24,5 @@ export const useStyleSheet = (nodeRef: RefObject<HTMLDivElement>): void => {
 
       parentDocument.head.appendChild(styleElement);
     }
-  }, []);
+  });
 };

@@ -1,24 +1,25 @@
-import React from "react";
+import { JSX } from "solid-js";
 import { formatClassName } from "../../utils/format";
 
 interface Props {
-  className?: string;
+  class?: string;
   top?: number;
   left: number;
   color: string;
 }
 
-export const Pointer = ({ className, color, left, top = 0.5 }: Props): JSX.Element => {
-  const nodeClassName = formatClassName(["react-colorful__pointer", className]);
+export const Pointer = (props: Props): JSX.Element => {
+  let {top, left, color} = props;
+  const nodeClassName = formatClassName(["react-colorful__pointer", props.class]);
 
   const style = {
-    top: `${top * 100}%`,
+    top: `${top! * 100}%`,
     left: `${left * 100}%`,
   };
 
   return (
-    <div className={nodeClassName} style={style}>
-      <div className="react-colorful__pointer-fill" style={{ backgroundColor: color }} />
+    <div class={nodeClassName} style={style}>
+      <div class="react-colorful__pointer-fill" style={{ "background-color": color }} />
     </div>
   );
 };

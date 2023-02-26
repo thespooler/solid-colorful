@@ -1,6 +1,5 @@
-import React, { useCallback } from "react";
+import { JSX } from "solid-js";
 import { ColorInputBaseProps } from "../types";
-
 import { validHex } from "../utils/validate";
 import { ColorInput } from "./common/ColorInput";
 
@@ -18,13 +17,10 @@ export const HexColorInput = (props: HexColorInputProps): JSX.Element => {
   const { prefixed, alpha, ...rest } = props;
 
   /** Escapes all non-hexadecimal characters including "#" */
-  const escape = useCallback(
-    (value: string) => value.replace(/([^0-9A-F]+)/gi, "").substring(0, alpha ? 8 : 6),
-    [alpha]
-  );
+  const escape = (value: string) => value.replace(/([^0-9A-F]+)/gi, "").substring(0, alpha ? 8 : 6);
 
   /** Validates hexadecimal strings */
-  const validate = useCallback((value: string) => validHex(value, alpha), [alpha]);
+  const validate = (value: string) => validHex(value, alpha);
 
   return (
     <ColorInput

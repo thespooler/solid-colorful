@@ -1,4 +1,4 @@
-import React from "react";
+import { JSX } from 'solid-js';
 
 export interface RgbColor {
   r: number;
@@ -41,8 +41,7 @@ export interface ColorModel<T extends AnyColor> {
   equal: (first: T, second: T) => boolean;
 }
 
-type ColorPickerHTMLAttributes = Omit<
-  React.HTMLAttributes<HTMLDivElement>,
+type ColorPickerHTMLAttributes = Omit<JSX.HTMLAttributes<HTMLDivElement>,
   "color" | "onChange" | "onChangeCapture"
 >;
 
@@ -51,8 +50,7 @@ export interface ColorPickerBaseProps<T extends AnyColor> extends ColorPickerHTM
   onChange: (newColor: T) => void;
 }
 
-type ColorInputHTMLAttributes = Omit<
-  React.InputHTMLAttributes<HTMLInputElement>,
+type ColorInputHTMLAttributes = Omit<HTMLInputElement,
   "onChange" | "value"
 >;
 

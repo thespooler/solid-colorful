@@ -1,5 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
-
+import { JSX } from "solid-js";
 import { useEventCallback } from "../../hooks/useEventCallback";
 import { ColorInputBaseProps } from "../../types";
 
@@ -15,10 +14,10 @@ interface Props extends ColorInputBaseProps {
 }
 
 export const ColorInput = (props: Props): JSX.Element => {
-  const { color = "", onChange, onBlur, escape, validate, format, process, ...rest } = props;
+  const { color = "", onChange, onblur, escape, validate, format, process, ...rest } = props;
   const [value, setValue] = useState(() => escape(color));
   const onChangeCallback = useEventCallback<string>(onChange);
-  const onBlurCallback = useEventCallback<React.FocusEvent<HTMLInputElement>>(onBlur);
+  const onBlurCallback = useEventCallback<React.FocusEvent<HTMLInputElement>>(onblur);
 
   // Trigger `onChange` handler only if the input value is a valid color
   const handleChange = useCallback(

@@ -1,5 +1,4 @@
-import React from "react";
-
+import { JSX } from "solid-js";
 import { ColorPicker } from "./common/ColorPicker";
 import { ColorModel, ColorPickerBaseProps, HsvColor } from "../types";
 import { equalColorObjects } from "../utils/compare";

@@ -1,5 +1,3 @@
-import React from "react";
-
 import { Interactive, Interaction } from "./Interactive";
 import { Pointer } from "./Pointer";
 
@@ -8,6 +6,8 @@ import { formatClassName } from "../../utils/format";
 import { clamp } from "../../utils/clamp";
 import { round } from "../../utils/round";
 import { HsvaColor } from "../../types";
+
+import { JSX } from "solid-js";
 
 interface Props {
   className?: string;
@@ -38,8 +38,8 @@ export const Alpha = ({ className, hsva, onChange }: Props): JSX.Element => {
   const ariaValue = round(hsva.a * 100);
 
   return (
-    <div className={nodeClassName}>
-      <div className="react-colorful__alpha-gradient" style={gradientStyle} />
+    <div class={nodeClassName}>
+      <div class="react-colorful__alpha-gradient" style={gradientStyle} />
       <Interactive
         onMove={handleMove}
         onKey={handleKey}
@@ -50,7 +50,7 @@ export const Alpha = ({ className, hsva, onChange }: Props): JSX.Element => {
         aria-valuemax="100"
       >
         <Pointer
-          className="react-colorful__alpha-pointer"
+          class="react-colorful__alpha-pointer"
           left={hsva.a}
           color={hsvaToHslaString(hsva)}
         />

@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import { createEffect, JSX } from 'solid-js';
 
 import { Hue } from "./Hue";
 import { Saturation } from "./Saturation";
@@ -14,21 +14,22 @@ interface Props<T extends AnyColor> extends Partial<ColorPickerBaseProps<T>> {
 }
 
 export const AlphaColorPicker = <T extends AnyColor>({
-  className,
+  class: className,
   colorModel,
   color = colorModel.defaultColor,
   onChange,
   ...rest
 }: Props<T>): JSX.Element => {
-  const nodeRef = useRef<HTMLDivElement>(null);
-  useStyleSheet(nodeRef);
+  let nodeRef: undefined | HTMLDivElement = undefined;
+
+  createEffect(() => { if (nodeRef !== undefined) useStyleSheet(nodeRef) });
 
   const [hsva, updateHsva] = useColorManipulation<T>(colorModel, color, onChange);
 
-  const nodeClassName = formatClassName(["react-colorful", className]);
+  const nodeClass = formatClassName(["react-colorful", className]);
 
   return (
-    <div {...rest} ref={nodeRef} className={nodeClassName}>
+    <div {...rest} ref={nodeRef} class={nodeClass}>
       <Saturation hsva={hsva} onChange={updateHsva} />
       <Hue hue={hsva.h} onChange={updateHsva} />
       <Alpha hsva={hsva} onChange={updateHsva} className="react-colorful__last-control" />
