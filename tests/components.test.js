@@ -1,5 +1,4 @@
-import React from "react";
-import { render, cleanup, fireEvent } from "@testing-library/react";
+import { render, cleanup, fireEvent } from "@solidjs/testing-library";
 import {
   HexColorInput,
   HexColorPicker,
@@ -47,25 +46,25 @@ Object.defineProperties(HTMLElement.prototype, {
 });
 
 it("Renders proper color picker markup", () => {
-  const result = render(<HexColorPicker color="#F00" />);
+  const result = render(() => <HexColorPicker color="#F00" />);
 
   expect(result.container.firstChild).toMatchSnapshot();
 });
 
 it("Renders proper alpha color picker markup", () => {
-  const result = render(<RgbaStringColorPicker color="rgba(255, 0, 0, 0.5)" />);
+  const result = render(() => <RgbaStringColorPicker color="rgba(255, 0, 0, 0.5)" />);
 
   expect(result.container.firstChild).toMatchSnapshot();
 });
 
 it("Works with no props", () => {
-  const result = render(<HexColorPicker />);
+  const result = render(() => <HexColorPicker />);
 
   expect(result.container.firstChild).toMatchSnapshot();
 });
 
 it("Accepts an additional `className`", () => {
-  const result = render(<RgbColorPicker className="custom-picker" />);
+  const result = render(() => <RgbColorPicker className="custom-picker" />);
 
   const hasClass = result.container.firstChild.classList.contains("custom-picker");
   expect(hasClass).toBe(true);
@@ -73,23 +72,23 @@ it("Accepts an additional `className`", () => {
 
 it("Doesn't trigger `onChange` after mounting", () => {
   const handleChange = jest.fn();
-  render(<HexColorPicker color="#c62182" onChange={handleChange} />);
+  render(() => <HexColorPicker color="#c62182" onChange={handleChange} />);
 
   expect(handleChange).not.toHaveReturned();
 });
 
 it("Doesn't trigger `onChange` after controlled rerender", () => {
   const handleChange = jest.fn();
-  const { rerender } = render(<HexColorPicker color="#c62182" onChange={handleChange} />);
+  const { rerender } = render(() => <HexColorPicker color="#c62182" onChange={handleChange} />);
 
-  rerender(<HexColorPicker color="#c72282" onChange={handleChange} />);
+  rerender(() => <HexColorPicker color="#c72282" onChange={handleChange} />);
 
   expect(handleChange).not.toHaveReturned();
 });
 
 it("Doesn't call `onChange` when user changes a hue of a grayscale color", () => {
   const handleChange = jest.fn();
-  const { container } = render(<HexColorPicker color="#000" onChange={handleChange} />);
+  const { container } = render(() => <HexColorPicker color="#000" onChange={handleChange} />);
   const hue = container.querySelector(".react-colorful__hue .react-colorful__interactive");
 
   fireEvent.touchStart(hue, { touches: [{ pageX: 0, pageY: 0 }] });
@@ -100,7 +99,7 @@ it("Doesn't call `onChange` when user changes a hue of a grayscale color", () =>
 
 it("Triggers `onChange` after a mouse interaction", async () => {
   const handleChange = jest.fn();
-  const result = render(<RgbaColorPicker onChange={handleChange} />);
+  const result = render(() => <RgbaColorPicker onChange={handleChange} />);
   const saturation = result.container.querySelector(
     ".react-colorful__saturation .react-colorful__interactive"
   );
@@ -114,7 +113,7 @@ it("Triggers `onChange` after a mouse interaction", async () => {
 it("Triggers `onChange` after a touch interaction", async () => {
   const handleChange = jest.fn((hsv) => hsv);
   const initialValue = { h: 0, s: 100, v: 100 };
-  const result = render(<HsvColorPicker color={initialValue} onChange={handleChange} />);
+  const result = render(() => <HsvColorPicker color={initialValue} onChange={handleChange} />);
   const hue = result.container.querySelector(".react-colorful__hue .react-colorful__interactive");
 
   fireEvent.touchStart(hue, { touches: [{ pageX: 0, pageY: 0, bubbles: true }] });
@@ -126,7 +125,7 @@ it("Triggers `onChange` after a touch interaction", async () => {
 it("Supports multitouch", async () => {
   const handleChange = jest.fn((hsva) => hsva);
   const initialValue = { h: 0, s: 100, v: 100, a: 0 };
-  const result = render(<HsvaColorPicker color={initialValue} onChange={handleChange} />);
+  const result = render(() => <HsvaColorPicker color={initialValue} onChange={handleChange} />);
   const hue = result.container.querySelector(".react-colorful__hue .react-colorful__interactive");
   const alpha = result.container.querySelector(
     ".react-colorful__alpha .react-colorful__interactive"
@@ -159,7 +158,7 @@ it("Supports multitouch", async () => {
 
 it("Pointer doesn't follow the mouse if it was released outside of the document bounds", async () => {
   const handleChange = jest.fn();
-  const result = render(<RgbaColorPicker onChange={handleChange} />);
+  const result = render(() => <RgbaColorPicker onChange={handleChange} />);
   const saturation = result.container.querySelector(
     ".react-colorful__saturation .react-colorful__interactive"
   );
@@ -178,7 +177,7 @@ it("Changes alpha channel value after an interaction", async () => {
   const handleChange = jest.fn((hsla) => hsla);
   const initialValue = { h: 100, s: 0, l: 0, a: 0 };
 
-  const result = render(<HslaColorPicker color={initialValue} onChange={handleChange} />);
+  const result = render(() => <HslaColorPicker color={initialValue} onChange={handleChange} />);
   const alpha = result.container.querySelector(
     ".react-colorful__alpha .react-colorful__interactive"
   );
@@ -191,7 +190,7 @@ it("Changes alpha channel value after an interaction", async () => {
 
 it("Uses #rrggbbaa format if alpha channel value is less than 1", async () => {
   const handleChange = jest.fn((hex) => hex);
-  const result = render(<HexAlphaColorPicker color="#112233" onChange={handleChange} />);
+  const result = render(() => <HexAlphaColorPicker color="#112233" onChange={handleChange} />);
   const alpha = result.container.querySelector(
     ".react-colorful__alpha .react-colorful__interactive"
   );
@@ -206,7 +205,7 @@ it("Uses #rrggbbaa format if alpha channel value is less than 1", async () => {
 // See https://github.com/omgovich/react-colorful/issues/55
 it("Doesn't react on mouse events after a touch interaction", () => {
   const handleChange = jest.fn((hslString) => hslString);
-  const result = render(<HslStringColorPicker color="hsl(100, 0%, 0%)" onChange={handleChange} />);
+  const result = render(() => <HslStringColorPicker color="hsl(100, 0%, 0%)" onChange={handleChange} />);
   const hue = result.container.querySelector(".react-colorful__hue .react-colorful__interactive");
 
   fireEvent.touchStart(hue, { touches: [{ pageX: 0, pageY: 0, bubbles: true }] }); // 1
@@ -224,7 +223,7 @@ it("Captures arrow keys only", async () => {
   const handleChange = jest.fn((hex) => hex);
   const initialValue = "hsv(180, 90%, 90%)";
 
-  const result = render(<HsvStringColorPicker color={initialValue} onChange={handleChange} />);
+  const result = render(() => <HsvStringColorPicker color={initialValue} onChange={handleChange} />);
   const saturation = result.container.querySelector(
     ".react-colorful__saturation .react-colorful__interactive"
   );
@@ -251,7 +250,7 @@ it("Changes saturation with arrow keys", async () => {
   const handleChange = jest.fn();
   const initialValue = { r: 80, g: 100, b: 120 };
 
-  const result = render(<RgbColorPicker color={initialValue} onChange={handleChange} />);
+  const result = render(() => <RgbColorPicker color={initialValue} onChange={handleChange} />);
   const hue = result.container.querySelector(
     ".react-colorful__saturation .react-colorful__interactive"
   );
@@ -268,7 +267,7 @@ it("Changes hue with arrow keys", async () => {
   const handleChange = jest.fn();
   const initialValue = { h: 180, s: 0, l: 50, a: 1 };
 
-  const result = render(<HslColorPicker color={initialValue} onChange={handleChange} />);
+  const result = render(() => <HslColorPicker color={initialValue} onChange={handleChange} />);
   const hue = result.container.querySelector(".react-colorful__hue .react-colorful__interactive");
 
   hue.focus();
@@ -282,7 +281,7 @@ it("Changes alpha with arrow keys", async () => {
   const handleChange = jest.fn();
   const initialValue = { h: 180, s: 0, v: 50, a: 0.5 };
 
-  const result = render(<HsvaColorPicker color={initialValue} onChange={handleChange} />);
+  const result = render(() => <HsvaColorPicker color={initialValue} onChange={handleChange} />);
   const alpha = result.container.querySelector(
     ".react-colorful__alpha .react-colorful__interactive"
   );
@@ -299,7 +298,7 @@ it("Ignores keyboard commands if the pointer is already on a saturation edge", a
 
   // Place pointer to the left-top corner of the saturation area
   const initialValue = "hsla(200, 0%, 100%, 1)";
-  const result = render(<HslaStringColorPicker color={initialValue} onChange={handleChange} />);
+  const result = render(() => <HslaStringColorPicker color={initialValue} onChange={handleChange} />);
   const saturation = result.container.querySelector(
     ".react-colorful__saturation .react-colorful__interactive"
   );
@@ -318,7 +317,7 @@ it("Ignores keyboard commands if the pointer is already on a alpha edge", async 
 
   // Place pointer to the right side of the alpha area
   const initialValue = "hsva(0, 0%, 0%, 1)";
-  const result = render(<HsvaStringColorPicker color={initialValue} onChange={handleChange} />);
+  const result = render(() => <HsvaStringColorPicker color={initialValue} onChange={handleChange} />);
   const saturation = result.container.querySelector(
     ".react-colorful__alpha .react-colorful__interactive"
   );
@@ -333,7 +332,7 @@ it("Ignores keyboard commands if the pointer is already on a alpha edge", async 
 
 it("Sets proper `aria-valuetext` attribute value", async () => {
   const handleChange = jest.fn();
-  const result = render(<RgbaStringColorPicker color="rgb(0, 0, 0, 0)" onChange={handleChange} />);
+  const result = render(() => <RgbaStringColorPicker color="rgb(0, 0, 0, 0)" onChange={handleChange} />);
   const saturation = result.container.querySelector(
     ".react-colorful__saturation .react-colorful__interactive"
   );
@@ -354,14 +353,14 @@ it("Sets proper `aria-valuetext` attribute value", async () => {
 });
 
 it("Accepts any valid `div` attributes", () => {
-  const result = render(<RgbStringColorPicker id="my-id" aria-hidden="false" />);
+  const result = render(() => <RgbStringColorPicker id="my-id" aria-hidden="false" />);
 
   expect(result.container.firstChild).toMatchSnapshot();
 });
 
 it("Supports any event that a regular div does", () => {
   const handleHover = jest.fn();
-  const result = render(<HsvaColorPicker onMouseEnter={handleHover} />);
+  const result = render(() => <HsvaColorPicker onMouseEnter={handleHover} />);
   fireEvent.mouseEnter(result.container.firstChild);
 
   expect(handleHover).toHaveReturnedTimes(1);
@@ -377,7 +376,7 @@ it("Renders `HexColorInput` component properly", () => {
 
 it("Fires `onChange` when user changes `HexColorInput` value", () => {
   const handleChange = jest.fn((hex) => hex);
-  const result = render(<HexColorInput onChange={handleChange} />);
+  const result = render(() => <HexColorInput onChange={handleChange} />);
   const input = result.container.firstChild;
 
   fireEvent.change(input, { target: { value: "112233" } });
@@ -387,7 +386,7 @@ it("Fires `onChange` when user changes `HexColorInput` value", () => {
 
 it("Fires custom `onBlur` when `HexColorInput` has lost focus", () => {
   const handleBlur = jest.fn((e) => e.target.value);
-  const result = render(<HexColorInput color="#ffffff" onBlur={handleBlur} />);
+  const result = render(() => <HexColorInput color="#ffffff" onBlur={handleBlur} />);
   const input = result.container.firstChild;
 
   fireEvent.blur(input);
@@ -396,7 +395,7 @@ it("Fires custom `onBlur` when `HexColorInput` has lost focus", () => {
 });
 
 it("Displays `#` prefix in `HexColorInput` if `prefixed` is turned on", () => {
-  const result = render(<HexColorInput color="111" prefixed />);
+  const result = render(() => <HexColorInput color="111" prefixed />);
   const input = result.container.firstChild;
   expect(input.value).toBe("#111");
 
@@ -405,7 +404,7 @@ it("Displays `#` prefix in `HexColorInput` if `prefixed` is turned on", () => {
 });
 
 it("Allows to enter `#rgba` and `#rrggbbaa` in `HexColorInput` if `alpha` is turned on", () => {
-  const result = render(<HexColorInput color="112233" alpha />);
+  const result = render(() => <HexColorInput color="112233" alpha />);
   const input = result.container.firstChild;
   expect(input.value).toBe("112233");
 
@@ -417,7 +416,7 @@ it("Allows to enter `#rgba` and `#rrggbbaa` in `HexColorInput` if `alpha` is tur
 });
 
 it("Does not allow to enter `#rrggbbaa` in `HexColorInput` if `alpha` is turned off", () => {
-  const result = render(<HexColorInput color="aabbcc" />);
+  const result = render(() => <HexColorInput color="aabbcc" />);
   const input = result.container.firstChild;
   expect(input.value).toBe("aabbcc");
 

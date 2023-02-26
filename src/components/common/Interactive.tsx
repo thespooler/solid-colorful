@@ -2,6 +2,7 @@ import { createEffect, createMemo, createSignal } from "solid-js";
 import { JSX } from "solid-js/jsx-runtime";
 import { clamp } from "../../utils/clamp";
 
+
 export interface Interaction {
   left: number;
   top: number;
