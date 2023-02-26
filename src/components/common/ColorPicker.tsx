@@ -13,7 +13,7 @@ interface Props<T extends AnyColor> extends Partial<ColorPickerBaseProps<T>> {
 
 export const ColorPicker = <T extends AnyColor>(props: Props<T>): JSX.Element => {
   let nodeRef: HTMLDivElement | undefined;
-  useStyleSheet(nodeRef);
+  if (nodeRef !== undefined) { useStyleSheet(nodeRef); }
 
   let {
     colorModel,
@@ -28,8 +28,8 @@ export const ColorPicker = <T extends AnyColor>(props: Props<T>): JSX.Element =>
 
   return (
     <div {...rest} ref={nodeRef} class={nodeClassName}>
-      <Saturation hsva={hsva} onChange={updateHsva} />
-      <Hue hue={hsva.h} onChange={updateHsva} class="react-colorful__last-control" />
+      <Saturation hsva={hsva()} onChange={updateHsva} />
+      <Hue hue={hsva().h} onChange={updateHsva} class="react-colorful__last-control" />
     </div>
   );
 };

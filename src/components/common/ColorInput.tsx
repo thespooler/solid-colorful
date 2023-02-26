@@ -1,5 +1,4 @@
-import { JSX } from "solid-js";
-import { useEventCallback } from "../../hooks/useEventCallback";
+import { createEffect, createSignal, JSX } from "solid-js";
 import { ColorInputBaseProps } from "../../types";
 
 interface Props extends ColorInputBaseProps {
@@ -14,42 +13,33 @@ interface Props extends ColorInputBaseProps {
 }
 
 export const ColorInput = (props: Props): JSX.Element => {
-  const { color = "", onChange, onblur, escape, validate, format, process, ...rest } = props;
-  const [value, setValue] = useState(() => escape(color));
-  const onChangeCallback = useEventCallback<string>(onChange);
-  const onBlurCallback = useEventCallback<React.FocusEvent<HTMLInputElement>>(onblur);
+  const { color = "", onChange, onBlur, escape, validate, format, process, ...rest } = props;
+  const [value, setValue] = createSignal(escape(color));
 
   // Trigger `onChange` handler only if the input value is a valid color
-  const handleChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      const inputValue = escape(e.target.value);
-      setValue(inputValue);
-      if (validate(inputValue)) onChangeCallback(process ? process(inputValue) : inputValue);
-    },
-    [escape, process, validate, onChangeCallback]
-  );
+  const handleChange = (e: Event & { currentTarget: HTMLInputElement; target: Element }) => {
+    const inputValue = escape(e.currentTarget.value);
+    setValue(inputValue);
+    if (validate(inputValue) &&  onChange !== undefined) onChange(process ? process(inputValue) : inputValue);
+  };
 
   // Take the color from props if the last typed color (in local state) is not valid
-  const handleBlur = useCallback(
-    (e: React.FocusEvent<HTMLInputElement>) => {
-      if (!validate(e.target.value)) setValue(escape(color));
-      onBlurCallback(e);
-    },
-    [color, escape, validate, onBlurCallback]
-  );
+  const handleBlur = (e: FocusEvent & { currentTarget: HTMLInputElement; target: Element; }) => {
+    if (!validate(e.currentTarget.value)) setValue(escape(color));
+  };
 
   // Update the local state when `color` property value is changed
-  useEffect(() => {
+  createEffect(() => {
     setValue(escape(color));
   }, [color, escape]);
 
   return (
     <input
       {...rest}
-      value={format ? format(value) : value}
-      spellCheck="false" // the element should not be checked for spelling errors
+      value={format ? format(value()) : value()}
+      spellcheck={false} // the element should not be checked for spelling errors
       onChange={handleChange}
       onBlur={handleBlur}
     />
   );
-};
+}

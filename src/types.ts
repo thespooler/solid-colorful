@@ -50,7 +50,7 @@ export interface ColorPickerBaseProps<T extends AnyColor> extends ColorPickerHTM
   onChange: (newColor: T) => void;
 }
 
-type ColorInputHTMLAttributes = Omit<HTMLInputElement,
+type ColorInputHTMLAttributes = Omit<JSX.InputHTMLAttributes<HTMLInputElement>,
   "onChange" | "value"
 >;
 

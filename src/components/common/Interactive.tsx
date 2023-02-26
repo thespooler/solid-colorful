@@ -1,4 +1,4 @@
-import { createEffect, createMemo } from "solid-js";
+import { createEffect, createMemo, createSignal } from "solid-js";
 import { JSX } from "solid-js/jsx-runtime";
 import { clamp } from "../../utils/clamp";
 
@@ -11,7 +11,7 @@ export interface Interaction {
 const isTouch = (event: MouseEvent | TouchEvent): event is TouchEvent => "touches" in event;
 
 // Finds a proper touch point by its identifier
-const getTouchPoint = (touches: TouchList, touchId: null | number): Touch => {
+const getTouchPoint = (touches: TouchList, touchId: undefined | number): Touch => {
   for (let i = 0; i < touches.length; i++) {
     if (touches[i].identifier === touchId) return touches[i];
   }
@@ -27,7 +27,7 @@ const getParentWindow = (node?: HTMLDivElement | null): Window => {
 const getRelativePosition = (
   node: HTMLDivElement,
   event: MouseEvent | TouchEvent,
-  touchId: null | number
+  touchId: undefined | number
 ): Interaction => {
   const rect = node.getBoundingClientRect();
 
@@ -60,7 +60,9 @@ interface Props {
 }
 
 const InteractiveBase = ({ onMove, onKey, ...rest }: Props) => {
-  const container: HTMLDivElement | undefined = undefined;
+  let container: HTMLDivElement | undefined = undefined;
+  const [touchId, setTouchId] = createSignal<undefined | number>(undefined);
+  const [hasTouch, setHasTouch] = createSignal(false);
 
   const handleMoveStart = (nativeEvent: MouseEvent | TouchEvent) => {
     if (!container) return;
@@ -68,16 +70,16 @@ const InteractiveBase = ({ onMove, onKey, ...rest }: Props) => {
     // Prevent text selection
     preventDefaultMove(nativeEvent);
 
-    if (isInvalid(nativeEvent, hasTouch.current) || !container) return;
+    if (isInvalid(nativeEvent, hasTouch()) || !container) return;
 
     if (isTouch(nativeEvent)) {
-      hasTouch.current = true;
+      setHasTouch(true);
       const changedTouches = nativeEvent.changedTouches || [];
-      if (changedTouches.length) touchId.current = changedTouches[0].identifier;
+      if (changedTouches.length) setTouchId(changedTouches[0].identifier);
     }
 
-    el.focus();
-    onMoveCallback(getRelativePosition(el, nativeEvent, touchId.current));
+    container.focus();
+    onMove(getRelativePosition(container, nativeEvent, touchId()));
     toggleDocumentEvents(true);
   };
 
@@ -92,8 +94,8 @@ const InteractiveBase = ({ onMove, onKey, ...rest }: Props) => {
     // without pressing it down
     const isDown = isTouch(event) ? event.touches.length > 0 : event.buttons > 0;
 
-    if (isDown && container.current) {
-      onMoveCallback(getRelativePosition(container.current, event, touchId.current));
+    if (isDown && container) {
+      onMove(getRelativePosition(container, event, touchId()));
     } else {
       toggleDocumentEvents(false);
     }
@@ -111,16 +113,15 @@ const InteractiveBase = ({ onMove, onKey, ...rest }: Props) => {
     // Send relative offset to the parent component.
     // We use codes (37←, 38↑, 39→, 40↓) instead of keys ('ArrowRight', 'ArrowDown', etc)
     // to reduce the size of the library
-    onKeyCallback({
+    onKey({
       left: keyCode === 39 ? 0.05 : keyCode === 37 ? -0.05 : 0,
       top: keyCode === 40 ? 0.05 : keyCode === 38 ? -0.05 : 0,
     });
   };
 
   function toggleDocumentEvents(state?: boolean) {
-    const touch = hasTouch.current;
-    const el = container.current;
-    const parentWindow = getParentWindow(el);
+    const touch = hasTouch();
+    const parentWindow = getParentWindow(container);
 
     // Add or remove additional pointer event listeners
     const toggleEvent = state ? parentWindow.addEventListener : parentWindow.removeEventListener;

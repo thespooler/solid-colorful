@@ -30,9 +30,9 @@ export const AlphaColorPicker = <T extends AnyColor>({
 
   return (
     <div {...rest} ref={nodeRef} class={nodeClass}>
-      <Saturation hsva={hsva} onChange={updateHsva} />
-      <Hue hue={hsva.h} onChange={updateHsva} />
-      <Alpha hsva={hsva} onChange={updateHsva} className="react-colorful__last-control" />
+      <Saturation hsva={hsva()} onChange={updateHsva} />
+      <Hue hue={hsva().h} onChange={updateHsva} />
+      <Alpha hsva={hsva()} onChange={updateHsva} className="react-colorful__last-control" />
     </div>
   );
 };
