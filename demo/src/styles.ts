@@ -1,10 +1,6 @@
-import { createElement } from "react";
-import { styled, setup } from "goober";
-import { createGlobalStyles } from "goober/global";
+import { createGlobalStyles, styled } from "solid-styled-components";
 import { Star } from "./components/Icon";
 import { RgbaColorPicker } from "../../src";
-
-setup(createElement);
 
 export const GlobalStyles = createGlobalStyles`
   * {

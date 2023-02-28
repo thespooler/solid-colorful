@@ -1,5 +1,6 @@
-import React, { useState } from "react";
-import ReactDOM from "react-dom";
+import { createSignal } from "solid-js";
+import { render } from 'solid-js/web';
+
 import { RgbaColor } from "../../src";
 import { DevTools } from "./components/DevTools";
 import { useFaviconColor } from "./hooks/useFaviconColor";
@@ -35,8 +36,8 @@ const getRandomColor = (): RgbaColor => {
 };
 
 const Demo = () => {
-  const [color, setColor] = useState<RgbaColor>(getRandomColor);
-  const textColor = getBrightness(color) > 128 || color.a < 0.5 ? "#000" : "#FFF";
+  const [color, setColor] = createSignal<RgbaColor>(getRandomColor());
+  const textColor = getBrightness(color()) > 128 || color().a < 0.5 ? "#000" : "#FFF";
 
   const stargazerCount = useStargazerCount();
 
@@ -45,7 +46,7 @@ const Demo = () => {
     setColor(color);
   };
 
-  const colorString = `rgba(${color.r}, ${color.g}, ${color.b}, ${color.a}`;
+  const colorString = `rgba(${color().r}, ${color().g}, ${color().b}, ${color().a}`;
 
   useBodyBackground(colorString);
   useFaviconColor(colorString);
@@ -56,7 +57,7 @@ const Demo = () => {
 
       <Header style={{ color: textColor }}>
         <HeaderDemo>
-          <HeaderDemoPicker color={color} onChange={handleChange} />
+          <HeaderDemoPicker color={color()} onChange={handleChange} />
         </HeaderDemo>
         <HeaderContent>
           <HeaderTitle>React Colorful 🎨</HeaderTitle>
@@ -91,4 +92,4 @@ const Demo = () => {
   );
 };
 
-ReactDOM.render(<Demo />, document.getElementById("root"));
+render(() => <Demo />, document.getElementById("root")!);

@@ -1,6 +1,6 @@
-import React from "react";
+import { JSX } from "solid-js/jsx-runtime";
 
-export const Star = (props: React.SVGAttributes<SVGElement>): JSX.Element => (
+export const Star = (props: JSX.SvgSVGAttributes<SVGSVGElement>): JSX.Element => (
   <svg viewBox="0 0 24 24" width="20" height="20" xmlns="http://www.w3.org/2000/svg" {...props}>
     <path
       fill="currentColor"

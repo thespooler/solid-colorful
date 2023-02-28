@@ -1,4 +1,5 @@
-import React from "react";
+import { JSX } from "solid-js/jsx-runtime";
+
 import { PickerPreview } from "./PickerPreview";
 import {
   // HEX
@@ -29,6 +30,7 @@ import {
   HsvaColorPicker,
   HsvaStringColorPicker,
 } from "../../../src";
+
 
 export const DevTools = (): JSX.Element => {
   return (

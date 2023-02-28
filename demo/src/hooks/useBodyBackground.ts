@@ -1,7 +1,7 @@
-import { useEffect } from "react";
+import { createEffect } from "solid-js";
 
 export const useBodyBackground = (color: string): void => {
-  useEffect(() => {
+  createEffect(() => {
     document.body.style.backgroundColor = color;
-  }, [color]);
+  });
 };

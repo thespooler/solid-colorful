@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-import React, { useState } from "react";
-import Frame from "react-frame-component";
+import { createSignal } from "solid-js";
+import { JSX } from "solid-js/jsx-runtime";
 import { HexColorInput } from "../../../src";
 import { ColorPickerBaseProps, AnyColor } from "../../../src/types";
 import { PreviewContainer, PreviewDemo, PreviewOutput, PreviewTitle } from "../styles";
@@ -8,7 +8,7 @@ import { PreviewContainer, PreviewDemo, PreviewOutput, PreviewTitle } from "../s
 interface Props<T extends AnyColor> {
   title: string;
   frame?: boolean;
-  PickerComponent: React.ComponentType<Partial<ColorPickerBaseProps<T>>>;
+  PickerComponent: (props: Partial<ColorPickerBaseProps<T>>) => JSX.Element;
   initialColor?: T;
 }
 
@@ -18,28 +18,23 @@ export function PickerPreview<T extends AnyColor>({
   PickerComponent,
   initialColor,
 }: Props<T>): JSX.Element {
-  const [color, setColor] = useState<T | undefined>(initialColor);
+  const [color, setColor] = createSignal<T | undefined>(initialColor);
 
   const handleChange = (color: T) => {
     console.log("🎨", color);
-    setColor(color);
+    setColor((prev) => color);
   };
-
-  const Wrapper = frame ? Frame : React.Fragment;
-
   return (
     <PreviewContainer>
       <PreviewTitle>{title}</PreviewTitle>
       <PreviewDemo>
-        <Wrapper>
-          <PickerComponent color={color} onChange={handleChange} />
-        </Wrapper>
+        <PickerComponent color={color()} onChange={handleChange} />
         {title.startsWith("HEX") && (
           // @ts-ignore
-          <HexColorInput color={color} onChange={handleChange} prefixed alpha />
+          <HexColorInput color={color()} onChange={handleChange} prefixed alpha />
         )}
       </PreviewDemo>
-      <PreviewOutput>{JSON.stringify(color)}</PreviewOutput>
+      <PreviewOutput>{JSON.stringify(color())}</PreviewOutput>
     </PreviewContainer>
   );
 }
