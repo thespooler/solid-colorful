@@ -1,3 +1,5 @@
+import { JSX } from "solid-js";
+
 import { Interactive, Interaction } from "./Interactive";
 import { Pointer } from "./Pointer";
 
@@ -6,8 +8,6 @@ import { formatClassName } from "../../utils/format";
 import { clamp } from "../../utils/clamp";
 import { round } from "../../utils/round";
 import { HsvaColor } from "../../types";
-
-import { JSX } from "solid-js";
 
 interface Props {
   className?: string;
@@ -25,10 +25,8 @@ export const Alpha = ({ className, hsva, onChange }: Props): JSX.Element => {
     onChange({ a: clamp(hsva.a + offset.left) });
   };
 
-  // We use `Object.assign` instead of the spread operator
-  // to prevent adding the polyfill (about 150 bytes gzipped)
-  const colorFrom = hsvaToHslaString(Object.assign({}, hsva, { a: 0 }));
-  const colorTo = hsvaToHslaString(Object.assign({}, hsva, { a: 1 }));
+  const colorFrom = hsvaToHslaString({ ...hsva, a: 0 });
+  const colorTo = hsvaToHslaString({ ...hsva, a: 1 });
 
   const gradientStyle = {
     backgroundImage: `linear-gradient(90deg, ${colorFrom}, ${colorTo})`,

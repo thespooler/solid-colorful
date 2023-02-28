@@ -14,7 +14,7 @@ interface HexColorInputProps extends ColorInputBaseProps {
 const prefix = (value: string) => "#" + value;
 
 export const HexColorInput = (props: HexColorInputProps): JSX.Element => {
-  const { prefixed, alpha, ...rest } = props;
+  const { prefixed = false, alpha, ...rest } = props;
 
   /** Escapes all non-hexadecimal characters including "#" */
   const escape = (value: string) => value.replace(/([^0-9A-F]+)/gi, "").substring(0, alpha ? 8 : 6);

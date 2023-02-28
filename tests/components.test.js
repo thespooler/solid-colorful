@@ -79,9 +79,8 @@ it("Doesn't trigger `onChange` after mounting", () => {
 
 it("Doesn't trigger `onChange` after controlled rerender", () => {
   const handleChange = jest.fn();
-  const { rerender } = render(() => <HexColorPicker color="#c62182" onChange={handleChange} />);
-
-  rerender(() => <HexColorPicker color="#c72282" onChange={handleChange} />);
+  render(() => <HexColorPicker color="#c62182" onChange={handleChange} />);
+  render(() => <HexColorPicker color="#c72282" onChange={handleChange} />);
 
   expect(handleChange).not.toHaveReturned();
 });
@@ -368,7 +367,7 @@ it("Supports any event that a regular div does", () => {
 
 it("Renders `HexColorInput` component properly", () => {
   const result = render(
-    () => <HexColorInput className="custom-input" color="#F00" placeholder="AABBCC" />
+    () => <HexColorInput class="custom-input" color="#F00" placeholder="AABBCC" />
   );
 
   expect(result.container.firstChild).toMatchSnapshot();

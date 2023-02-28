@@ -4,6 +4,7 @@ import { HsvaColor } from "../../types";
 import { hsvaToHslString } from "../../utils/convert";
 import { clamp } from "../../utils/clamp";
 import { round } from "../../utils/round";
+import { JSX } from "solid-js";
 
 interface Props {
   hsva: HsvaColor;
@@ -26,8 +27,8 @@ const SaturationBase = ({ hsva, onChange }: Props) => {
     });
   };
 
-  const containerStyle = {
-    backgroundColor: hsvaToHslString({ h: hsva.h, s: 100, v: 100, a: 1 }),
+  const containerStyle: JSX.CSSProperties = {
+    "background-color": hsvaToHslString({ h: hsva.h, s: 100, v: 100, a: 1 }),
   };
 
   return (

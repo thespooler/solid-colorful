@@ -28,14 +28,10 @@ export const ColorInput = (props: Props): JSX.Element => {
     if (!validate(e.currentTarget.value)) setValue(escape(color));
   };
 
-  // Update the local state when `color` property value is changed
-  createEffect(() => {
-    setValue(escape(color));
-  }, [color, escape]);
-
   return (
     <input
       {...rest}
+      title={color}
       value={format ? format(value()) : value()}
       spellcheck={false} // the element should not be checked for spelling errors
       onChange={handleChange}

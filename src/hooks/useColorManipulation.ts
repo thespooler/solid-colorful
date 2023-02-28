@@ -11,14 +11,14 @@ export function useColorManipulation<T extends AnyColor>(
   // No matter which color model is used (HEX, RGB(A) or HSL(A)),
   // all internal calculations are based on HSVA model
   const [hsva, updateHsva] = createSignal<HsvaColor>(colorModel.toHsva(color));
-  let cache = createMemo(() => untrack(() => ({ color, hsva: hsva() })));
+  let cache = { color, hsva: hsva() };
     
   // Update local HSVA-value if `color` property value is changed,
   // but only if that's not the same color that we just sent to the parent
   createEffect(() => {
-    if (!colorModel.equal(color, cache().color)) {
+    if (!colorModel.equal(color, cache.color)) {
       const newHsva = colorModel.toHsva(color);
-      cache = createMemo(() => untrack(() => ({ color, hsva: hsva() })));
+      cache = { color, hsva: hsva() };
       updateHsva(newHsva);
     }
   });
@@ -26,9 +26,9 @@ export function useColorManipulation<T extends AnyColor>(
   // Trigger `onChange` callback only if an updated color is different from cached one;
   // save the new color to the ref to prevent unnecessary updates
   createEffect(() => {
-    if (!colorModel.equal(color, cache().color)) {
+    if (!colorModel.equal(color, cache.color)) {
       const newHsva = colorModel.toHsva(color);
-      cache = createMemo(() => untrack(() => ({ color, hsva: newHsva })));
+      cache = { color, hsva: newHsva };
       updateHsva(newHsva);
     }
   });
@@ -36,10 +36,10 @@ export function useColorManipulation<T extends AnyColor>(
   createEffect(() => {
     let newColor = colorModel.fromHsva(hsva());
     if (
-      !equalColorObjects(hsva(), cache().hsva) &&
-      !colorModel.equal(newColor, cache().color)
+      !equalColorObjects(hsva(), cache.hsva) &&
+      !colorModel.equal(newColor, cache.color)
     ) {
-      cache = createMemo(() => untrack(() => ({ color: newColor, hsva: hsva() })));
+      cache = untrack(() => ({ color: newColor, hsva: hsva() }));
       if (onChange !== undefined) { onChange(newColor); }
     }
   });

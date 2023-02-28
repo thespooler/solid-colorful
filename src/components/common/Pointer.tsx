@@ -9,11 +9,11 @@ interface Props {
 }
 
 export const Pointer = (props: Props): JSX.Element => {
-  let {top, left, color} = props;
+  let {top = 0, left, color} = props;
   const nodeClassName = formatClassName(["react-colorful__pointer", props.class]);
 
-  const style = {
-    top: `${top! * 100}%`,
+  const style: JSX.CSSProperties = {
+    top: `${top * 100}%`,
     left: `${left * 100}%`,
   };
 
