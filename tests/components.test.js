@@ -368,7 +368,7 @@ it("Supports any event that a regular div does", () => {
 
 it("Renders `HexColorInput` component properly", () => {
   const result = render(
-    <HexColorInput className="custom-input" color="#F00" placeholder="AABBCC" />
+    () => <HexColorInput className="custom-input" color="#F00" placeholder="AABBCC" />
   );
 
   expect(result.container.firstChild).toMatchSnapshot();

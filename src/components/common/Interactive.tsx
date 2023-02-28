@@ -1,5 +1,5 @@
-import { createEffect, createMemo, createSignal } from "solid-js";
-import { JSX } from "solid-js/jsx-runtime";
+import { createSignal } from "solid-js";
+import { JSX } from "solid-js";
 import { clamp } from "../../utils/clamp";
 
 
