@@ -1,10 +1,9 @@
-import { createSignal } from "solid-js";
+import { createEffect, createSignal } from "solid-js";
 import { render } from 'solid-js/web';
 
 import { RgbaColor } from "../../src";
 import { DevTools } from "./components/DevTools";
 import { useFaviconColor } from "./hooks/useFaviconColor";
-import { useBodyBackground } from "./hooks/useBodyBackground";
 import { useStargazerCount } from "./hooks/useStargazerCount";
 import {
   GlobalStyles,
@@ -42,14 +41,14 @@ const Demo = () => {
   const stargazerCount = useStargazerCount();
 
   const handleChange = (color: RgbaColor) => {
-    console.log("🎨", color);
     setColor(color);
   };
 
-  const colorString = `rgba(${color().r}, ${color().g}, ${color().b}, ${color().a}`;
-
-  useBodyBackground(colorString);
-  useFaviconColor(colorString);
+  createEffect(() => {
+    const colorString = `rgba(${color().r}, ${color().g}, ${color().b}, ${color().a}`;
+    document.body.style.backgroundColor = colorString;
+    useFaviconColor(colorString);
+  });
 
   return (
     <div>

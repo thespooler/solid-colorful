@@ -1,7 +1,6 @@
-import { createSignal } from "solid-js";
+import { children, createSignal, ParentComponent } from "solid-js";
 import { JSX } from "solid-js";
 import { clamp } from "../../utils/clamp";
-
 
 export interface Interaction {
   left: number;
@@ -60,7 +59,7 @@ interface Props {
   children?: JSX.Element;
 }
 
-const InteractiveBase = ({ onMove, onKey, ...rest }: Props) => {
+export const Interactive: ParentComponent<Props> = (props: Props) => {
   let container: HTMLDivElement | undefined = undefined;
   const [touchId, setTouchId] = createSignal<undefined | number>(undefined);
   const [hasTouch, setHasTouch] = createSignal(false);
@@ -80,7 +79,7 @@ const InteractiveBase = ({ onMove, onKey, ...rest }: Props) => {
     }
 
     container.focus();
-    onMove(getRelativePosition(container, nativeEvent, touchId()));
+    props.onMove(getRelativePosition(container, nativeEvent, touchId()));
     toggleDocumentEvents(true);
   };
 
@@ -96,7 +95,7 @@ const InteractiveBase = ({ onMove, onKey, ...rest }: Props) => {
     const isDown = isTouch(event) ? event.touches.length > 0 : event.buttons > 0;
 
     if (isDown && container) {
-      onMove(getRelativePosition(container, event, touchId()));
+      props.onMove(getRelativePosition(container, event, touchId()));
     } else {
       toggleDocumentEvents(false);
     }
@@ -114,7 +113,7 @@ const InteractiveBase = ({ onMove, onKey, ...rest }: Props) => {
     // Send relative offset to the parent component.
     // We use codes (37←, 38↑, 39→, 40↓) instead of keys ('ArrowRight', 'ArrowDown', etc)
     // to reduce the size of the library
-    onKey({
+    props.onKey({
       left: keyCode === 39 ? 0.05 : keyCode === 37 ? -0.05 : 0,
       top: keyCode === 40 ? 0.05 : keyCode === 38 ? -0.05 : 0,
     });
@@ -132,7 +131,6 @@ const InteractiveBase = ({ onMove, onKey, ...rest }: Props) => {
 
   return (
     <div
-      {...rest}
       onTouchStart={handleMoveStart}
       onMouseDown={handleMoveStart}
       class="react-colorful__interactive"
@@ -140,9 +138,8 @@ const InteractiveBase = ({ onMove, onKey, ...rest }: Props) => {
       onKeyDown={handleKeyDown}
       tabIndex={0}
       role="slider"
-    />
+    >
+      {props.children}
+    </div>
   );
 };
-
-// export const Interactive = React.memo(InteractiveBase);
-export const Interactive = InteractiveBase;

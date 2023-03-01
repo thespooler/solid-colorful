@@ -5,7 +5,7 @@ import { Saturation } from "./Saturation";
 import { Alpha } from "./Alpha";
 
 import { ColorModel, ColorPickerBaseProps, AnyColor } from "../../types";
-import { useColorManipulation } from "../../hooks/useColorManipulation";
+import { createColorManipulation } from "../../hooks/useColorManipulation";
 import { useStyleSheet } from "../../hooks/useStyleSheet";
 import { formatClassName } from "../../utils/format";
 
@@ -24,15 +24,15 @@ export const AlphaColorPicker = <T extends AnyColor>({
 
   createEffect(() => { if (nodeRef !== undefined) useStyleSheet(nodeRef) });
 
-  const [hsva, updateHsva] = useColorManipulation<T>(colorModel, color, onChange);
+  const [{hsva},{handleChange}]= createColorManipulation(colorModel, color, onChange);
 
   const nodeClass = formatClassName(["react-colorful", className]);
 
   return (
     <div {...rest} ref={nodeRef} class={nodeClass}>
-      <Saturation hsva={hsva()} onChange={updateHsva} />
-      <Hue hue={hsva().h} onChange={updateHsva} />
-      <Alpha hsva={hsva()} onChange={updateHsva} className="react-colorful__last-control" />
+      <Saturation hsva={hsva()} onChange={handleChange} />
+      <Hue hue={hsva().h} onChange={handleChange} />
+      <Alpha hsva={hsva()} onChange={handleChange} class="react-colorful__last-control" />
     </div>
   );
 };

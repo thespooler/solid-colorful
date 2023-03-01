@@ -5,6 +5,7 @@ import { hsvaToHslString } from "../../utils/convert";
 import { formatClassName } from "../../utils/format";
 import { clamp } from "../../utils/clamp";
 import { round } from "../../utils/round";
+import { createEffect, createSignal, JSX } from "solid-js";
 
 interface Props {
   class?: string;

@@ -4,16 +4,16 @@ import { HsvaColor } from "../../types";
 import { hsvaToHslString } from "../../utils/convert";
 import { clamp } from "../../utils/clamp";
 import { round } from "../../utils/round";
-import { JSX } from "solid-js";
+import { createEffect, JSX } from "solid-js";
 
 interface Props {
   hsva: HsvaColor;
   onChange: (newColor: { s: number; v: number }) => void;
 }
 
-const SaturationBase = ({ hsva, onChange }: Props) => {
+export const Saturation = (props: Props) => {
   const handleMove = (interaction: Interaction) => {
-    onChange({
+    props.onChange({
       s: interaction.left * 100,
       v: 100 - interaction.top * 100,
     });
@@ -21,34 +21,29 @@ const SaturationBase = ({ hsva, onChange }: Props) => {
 
   const handleKey = (offset: Interaction) => {
     // Saturation and brightness always fit into [0, 100] range
-    onChange({
-      s: clamp(hsva.s + offset.left * 100, 0, 100),
-      v: clamp(hsva.v - offset.top * 100, 0, 100),
+    props.onChange({
+      s: clamp(props.hsva.s + offset.left * 100, 0, 100),
+      v: clamp(props.hsva.v - offset.top * 100, 0, 100),
     });
   };
 
-  const containerStyle: JSX.CSSProperties = {
-    "background-color": hsvaToHslString({ h: hsva.h, s: 100, v: 100, a: 1 }),
-  };
-
   return (
-    <div class="react-colorful__saturation" style={containerStyle}>
+    <div class="react-colorful__saturation" style={{
+      "background-color": hsvaToHslString({ h: props.hsva.h, s: 100, v: 100, a: 1 }),
+    }}>
       <Interactive
         onMove={handleMove}
         onKey={handleKey}
         aria-label="Color"
-        aria-valuetext={`Saturation ${round(hsva.s)}%, Brightness ${round(hsva.v)}%`}
+        aria-valuetext={`Saturation ${round(props.hsva.s)}%, Brightness ${round(props.hsva.v)}%`}
       >
         <Pointer
           class="react-colorful__saturation-pointer"
-          top={1 - hsva.v / 100}
-          left={hsva.s / 100}
-          color={hsvaToHslString(hsva)}
+          top={1 - props.hsva.v / 100}
+          left={props.hsva.s / 100}
+          color={hsvaToHslString(props.hsva)}
         />
       </Interactive>
     </div>
   );
 };
-
-// export const Saturation = React.memo(SaturationBase);
-export const Saturation = SaturationBase;

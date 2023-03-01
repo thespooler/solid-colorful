@@ -1,4 +1,4 @@
-import { JSX } from "solid-js";
+import { Component, createEffect, JSX, ParentComponent } from "solid-js";
 
 import { Interactive, Interaction } from "./Interactive";
 import { Pointer } from "./Pointer";
@@ -10,47 +10,41 @@ import { round } from "../../utils/round";
 import { HsvaColor } from "../../types";
 
 interface Props {
-  className?: string;
+  class?: string;
   hsva: HsvaColor;
   onChange: (newAlpha: { a: number }) => void;
 }
 
-export const Alpha = ({ className, hsva, onChange }: Props): JSX.Element => {
+export const Alpha = (props: Props): JSX.Element => {
   const handleMove = (interaction: Interaction) => {
-    onChange({ a: interaction.left });
+    props.onChange({ a: interaction.left });
   };
 
   const handleKey = (offset: Interaction) => {
     // Alpha always fit into [0, 1] range
-    onChange({ a: clamp(hsva.a + offset.left) });
+    props.onChange({ a: clamp(props.hsva.a + offset.left) });
   };
 
-  const colorFrom = hsvaToHslaString({ ...hsva, a: 0 });
-  const colorTo = hsvaToHslaString({ ...hsva, a: 1 });
-
-  const gradientStyle = {
-    backgroundImage: `linear-gradient(90deg, ${colorFrom}, ${colorTo})`,
-  };
-
-  const nodeClassName = formatClassName(["react-colorful__alpha", className]);
-  const ariaValue = round(hsva.a * 100);
+  const nodeClassName = formatClassName(["react-colorful__alpha", props.class]);
 
   return (
     <div class={nodeClassName}>
-      <div class="react-colorful__alpha-gradient" style={gradientStyle} />
+      <div class="react-colorful__alpha-gradient" style={{
+        "background-image": `linear-gradient(90deg, ${hsvaToHslaString({ ...props.hsva, a: 0 })}, ${hsvaToHslaString({ ...props.hsva, a: 1 }) })`,
+      }} />
       <Interactive
         onMove={handleMove}
         onKey={handleKey}
         aria-label="Alpha"
-        aria-valuetext={`${ariaValue}%`}
-        aria-valuenow={ariaValue}
+        aria-valuetext={`${round(props.hsva.a * 100)}%`}
+        aria-valuenow={round(props.hsva.a * 100)}
         aria-valuemin="0"
         aria-valuemax="100"
       >
         <Pointer
           class="react-colorful__alpha-pointer"
-          left={hsva.a}
-          color={hsvaToHslaString(hsva)}
+          left={props.hsva.a}
+          color={hsvaToHslaString(props.hsva)}
         />
       </Interactive>
     </div>

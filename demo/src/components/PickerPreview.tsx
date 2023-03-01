@@ -7,31 +7,25 @@ import { PreviewContainer, PreviewDemo, PreviewOutput, PreviewTitle } from "../s
 
 interface Props<T extends AnyColor> {
   title: string;
-  frame?: boolean;
   PickerComponent: (props: Partial<ColorPickerBaseProps<T>>) => JSX.Element;
   initialColor?: T;
 }
 
 export function PickerPreview<T extends AnyColor>({
   title,
-  frame,
   PickerComponent,
   initialColor,
 }: Props<T>): JSX.Element {
   const [color, setColor] = createSignal<T | undefined>(initialColor);
 
-  const handleChange = (color: T) => {
-    console.log("🎨", color);
-    setColor((prev) => color);
-  };
   return (
     <PreviewContainer>
       <PreviewTitle>{title}</PreviewTitle>
       <PreviewDemo>
-        <PickerComponent color={color()} onChange={handleChange} />
+        <PickerComponent color={color()} onChange={setColor} />
         {title.startsWith("HEX") && (
           // @ts-ignore
-          <HexColorInput color={color()} onChange={handleChange} prefixed alpha />
+          <HexColorInput color={color()} onChange={setColor} prefixed alpha />
         )}
       </PreviewDemo>
       <PreviewOutput>{JSON.stringify(color())}</PreviewOutput>
