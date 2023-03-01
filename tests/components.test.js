@@ -1,4 +1,4 @@
-import { render, cleanup, fireEvent } from "@solidjs/testing-library";
+import { render, cleanup, fireEvent, waitFor } from "@solidjs/testing-library";
 import {
   HexColorInput,
   HexColorPicker,
@@ -369,6 +369,8 @@ it("Renders `HexColorInput` component properly", () => {
   const result = render(
     () => <HexColorInput class="custom-input" color="#F00" placeholder="AABBCC" />
   );
+
+  expect(result.container.firstChild.value).toBe("F00");
 
   expect(result.container.firstChild).toMatchSnapshot();
 });

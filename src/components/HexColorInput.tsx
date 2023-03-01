@@ -1,4 +1,4 @@
-import { JSX } from "solid-js";
+import { JSX, splitProps } from "solid-js";
 import { ColorInputBaseProps } from "../types";
 import { validHex } from "../utils/validate";
 import { ColorInput } from "./common/ColorInput";
@@ -11,24 +11,18 @@ interface HexColorInputProps extends ColorInputBaseProps {
 }
 
 /** Adds "#" symbol to the beginning of the string */
-const prefix = (value: string) => "#" + value;
+const prefix = (value: string | undefined) => value ? "#" + value : "";
+const no_prefix = (value: string | undefined) => value ?? "";
 
 export const HexColorInput = (props: HexColorInputProps): JSX.Element => {
-  const { prefixed = false, alpha, ...rest } = props;
-
-  /** Escapes all non-hexadecimal characters including "#" */
-  const escape = (value: string) => value.replace(/([^0-9A-F]+)/gi, "").substring(0, alpha ? 8 : 6);
-
-  /** Validates hexadecimal strings */
-  const validate = (value: string) => validHex(value, alpha);
-
+  const [localprops, otherprops] = splitProps(props, ["prefixed", "alpha"]);
   return (
     <ColorInput
-      {...rest}
-      escape={escape}
-      format={prefixed ? prefix : undefined}
+      {...otherprops}
+      escape={(value: string) => value.replace(/([^0-9A-F]+)/gi, "").substring(0, localprops.alpha ? 8 : 6)}
+      format={localprops.prefixed ? prefix : no_prefix }
       process={prefix}
-      validate={validate}
+      validate={(value: string) => validHex(value, localprops.alpha)}
     />
   );
 };

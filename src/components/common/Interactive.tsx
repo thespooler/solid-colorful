@@ -1,4 +1,4 @@
-import { children, createSignal, ParentComponent } from "solid-js";
+import { children, createSignal, ParentComponent, splitProps } from "solid-js";
 import { JSX } from "solid-js";
 import { clamp } from "../../utils/clamp";
 
@@ -60,9 +60,11 @@ interface Props {
 }
 
 export const Interactive: ParentComponent<Props> = (props: Props) => {
+
   let container: HTMLDivElement | undefined = undefined;
   const [touchId, setTouchId] = createSignal<undefined | number>(undefined);
   const [hasTouch, setHasTouch] = createSignal(false);
+  const [localprops, otherprops] = splitProps(props, ["onKey", "onMove", "children"]);
 
   const handleMoveStart = (nativeEvent: MouseEvent | TouchEvent) => {
     if (!container) return;
@@ -79,7 +81,7 @@ export const Interactive: ParentComponent<Props> = (props: Props) => {
     }
 
     container.focus();
-    props.onMove(getRelativePosition(container, nativeEvent, touchId()));
+    localprops.onMove(getRelativePosition(container, nativeEvent, touchId()));
     toggleDocumentEvents(true);
   };
 
@@ -95,7 +97,7 @@ export const Interactive: ParentComponent<Props> = (props: Props) => {
     const isDown = isTouch(event) ? event.touches.length > 0 : event.buttons > 0;
 
     if (isDown && container) {
-      props.onMove(getRelativePosition(container, event, touchId()));
+      localprops.onMove(getRelativePosition(container, event, touchId()));
     } else {
       toggleDocumentEvents(false);
     }
@@ -113,7 +115,7 @@ export const Interactive: ParentComponent<Props> = (props: Props) => {
     // Send relative offset to the parent component.
     // We use codes (37←, 38↑, 39→, 40↓) instead of keys ('ArrowRight', 'ArrowDown', etc)
     // to reduce the size of the library
-    props.onKey({
+    localprops.onKey({
       left: keyCode === 39 ? 0.05 : keyCode === 37 ? -0.05 : 0,
       top: keyCode === 40 ? 0.05 : keyCode === 38 ? -0.05 : 0,
     });
@@ -131,6 +133,7 @@ export const Interactive: ParentComponent<Props> = (props: Props) => {
 
   return (
     <div
+      {...otherprops}
       onTouchStart={handleMoveStart}
       onMouseDown={handleMoveStart}
       class="react-colorful__interactive"
@@ -139,7 +142,7 @@ export const Interactive: ParentComponent<Props> = (props: Props) => {
       tabIndex={0}
       role="slider"
     >
-      {props.children}
+      {localprops.children}
     </div>
   );
 };

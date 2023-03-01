@@ -11,19 +11,15 @@ interface Props<T extends AnyColor> {
   initialColor?: T;
 }
 
-export function PickerPreview<T extends AnyColor>({
-  title,
-  PickerComponent,
-  initialColor,
-}: Props<T>): JSX.Element {
-  const [color, setColor] = createSignal<T | undefined>(initialColor);
+export function PickerPreview<T extends AnyColor>(props: Props<T>): JSX.Element {
+  const [color, setColor] = createSignal<T | undefined>(props.initialColor);
 
   return (
     <PreviewContainer>
-      <PreviewTitle>{title}</PreviewTitle>
+      <PreviewTitle>{props.title}</PreviewTitle>
       <PreviewDemo>
-        <PickerComponent color={color()} onChange={setColor} />
-        {title.startsWith("HEX") && (
+        <props.PickerComponent color={color()} onChange={setColor} />
+        {props.title.startsWith("HEX") && (
           // @ts-ignore
           <HexColorInput color={color()} onChange={setColor} prefixed alpha />
         )}

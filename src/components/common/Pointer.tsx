@@ -1,4 +1,4 @@
-import { Component } from "solid-js";
+import { Component, mergeProps } from "solid-js";
 import { formatClassName } from "../../utils/format";
 
 interface Props {
@@ -10,10 +10,11 @@ interface Props {
 
 export const Pointer: Component<Props> = (props: Props) => {
   const nodeClassName = formatClassName(["react-colorful__pointer", props.class]);
+  const mergedProps = mergeProps({ top: 0.5 }, props);
   return (
     <div class={nodeClassName} style={{
-      top: `${props.top! * 100}%`,
-      left: `${props.left * 100}%`,
+      top: `${mergedProps.top * 100}%`,
+      left: `${mergedProps.left * 100}%`,
     }}>
       <div class="react-colorful__pointer-fill" style={{ "background-color": props.color }} />
     </div>

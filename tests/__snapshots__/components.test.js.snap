@@ -59,7 +59,6 @@ exports[`Renders \`HexColorInput\` component properly 1`] = `
   class="custom-input"
   placeholder="AABBCC"
   spellcheck="false"
-  value="F00"
 />
 `;
 
