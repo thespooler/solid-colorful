@@ -21,6 +21,13 @@ export const ColorPicker = <T extends AnyColor>(props: Props<T>): JSX.Element =>
 
   const nodeClassName = formatClassName(["react-colorful", localprops.class]);
 
+  createEffect(() => {
+    if (props.color !== undefined) {
+      let hsva = props.colorModel.toHsva(props.color);
+      handleChange(hsva);
+    }
+  });
+
   return (
     <div {...otherprops} ref={nodeRef} class={nodeClassName}>
       <Saturation hsva={hsva()} onChange={handleChange} />

@@ -37,15 +37,11 @@ const getRandomColor = (): RgbaColor => {
 const Demo = () => {
   const [color, setColor] = createSignal<RgbaColor>(getRandomColor());
   const textColor = getBrightness(color()) > 128 || color().a < 0.5 ? "#000" : "#FFF";
-
   const stargazerCount = useStargazerCount();
 
-  const handleChange = (color: RgbaColor) => {
-    setColor(color);
-  };
-
   createEffect(() => {
-    const colorString = `rgba(${color().r}, ${color().g}, ${color().b}, ${color().a}`;
+    let color_v = color();
+    const colorString = `rgba(${color_v.r}, ${color_v.g}, ${color_v.b}, ${color_v.a}`;
     document.body.style.backgroundColor = colorString;
     useFaviconColor(colorString);
   });
@@ -56,7 +52,7 @@ const Demo = () => {
 
       <Header style={{ color: textColor }}>
         <HeaderDemo>
-          <HeaderDemoPicker color={color()} onChange={handleChange} />
+          <HeaderDemoPicker color={color()} onChange={setColor} />
         </HeaderDemo>
         <HeaderContent>
           <HeaderTitle>React Colorful 🎨</HeaderTitle>

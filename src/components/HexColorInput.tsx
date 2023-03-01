@@ -1,4 +1,4 @@
-import { JSX, splitProps } from "solid-js";
+import { createEffect, JSX, splitProps } from "solid-js";
 import { ColorInputBaseProps } from "../types";
 import { validHex } from "../utils/validate";
 import { ColorInput } from "./common/ColorInput";
@@ -16,6 +16,7 @@ const no_prefix = (value: string | undefined) => value ?? "";
 
 export const HexColorInput = (props: HexColorInputProps): JSX.Element => {
   const [localprops, otherprops] = splitProps(props, ["prefixed", "alpha"]);
+
   return (
     <ColorInput
       {...otherprops}

@@ -1,4 +1,5 @@
 import { render, cleanup, fireEvent, waitFor } from "@solidjs/testing-library";
+import { createSignal } from "solid-js";
 import {
   HexColorInput,
   HexColorPicker,

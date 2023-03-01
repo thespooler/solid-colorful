@@ -1,4 +1,4 @@
-import { JSX, splitProps } from "solid-js";
+import { JSX } from "solid-js";
 import { ColorPicker } from "./common/ColorPicker";
 import { ColorModel, ColorPickerBaseProps } from "../types";
 import { equalHex } from "../utils/compare";

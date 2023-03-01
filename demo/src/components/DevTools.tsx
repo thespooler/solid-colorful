@@ -35,7 +35,11 @@ import {
 export const DevTools = (): JSX.Element => {
   return (
     <div>
-      <PickerPreview<string> title="HEX" PickerComponent={HexColorPicker} initialColor="#406090" />
+      <PickerPreview<string> 
+        title="HEX" 
+        PickerComponent={HexColorPicker} 
+        initialColor="#406090" 
+      />
       <PickerPreview<string>
         title="HEX Alpha"
         PickerComponent={HexAlphaColorPicker}
@@ -103,7 +107,6 @@ export const DevTools = (): JSX.Element => {
       />
 
       <PickerPreview<RgbColor>
-        frame
         title="RGB"
         PickerComponent={RgbColorPicker}
         initialColor={{ r: 60, g: 80, b: 120 }}
