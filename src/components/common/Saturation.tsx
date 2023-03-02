@@ -28,7 +28,7 @@ export const Saturation = (props: Props) => {
   };
 
   return (
-    <div class="react-colorful__saturation" style={{
+    <div class="solid-colorful__saturation" style={{
       "background-color": hsvaToHslString({ h: props.hsva.h, s: 100, v: 100, a: 1 }),
     }}>
       <Interactive
@@ -38,7 +38,7 @@ export const Saturation = (props: Props) => {
         aria-valuetext={`Saturation ${round(props.hsva.s)}%, Brightness ${round(props.hsva.v)}%`}
       >
         <Pointer
-          class="react-colorful__saturation-pointer"
+          class="solid-colorful__saturation-pointer"
           top={1 - props.hsva.v / 100}
           left={props.hsva.s / 100}
           color={hsvaToHslString(props.hsva)}

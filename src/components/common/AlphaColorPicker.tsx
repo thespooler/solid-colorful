@@ -21,13 +21,13 @@ export const AlphaColorPicker = <T extends AnyColor>(props: Props<T>): JSX.Eleme
 
   const [{ hsva }, { handleChange }] = createColorManipulation(localprops.colorModel, localprops.color || localprops.colorModel.defaultColor, localprops.onChange);
 
-  const nodeClass = formatClassName(["react-colorful", localprops.class]);
+  const nodeClass = formatClassName(["solid-colorful", localprops.class]);
 
   return (
     <div {...otherprops} ref={nodeRef} class={nodeClass}>
       <Saturation hsva={hsva()} onChange={handleChange} />
       <Hue hue={hsva().h} onChange={handleChange} />
-      <Alpha hsva={hsva()} onChange={handleChange} class="react-colorful__last-control" />
+      <Alpha hsva={hsva()} onChange={handleChange} class="solid-colorful__last-control" />
     </div>
   );
 };

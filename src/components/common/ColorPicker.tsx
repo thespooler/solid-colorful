@@ -19,7 +19,7 @@ export const ColorPicker = <T extends AnyColor>(props: Props<T>): JSX.Element =>
 
   const [{ hsva }, { handleChange }] = createColorManipulation(localprops.colorModel, localprops.color || localprops.colorModel.defaultColor, localprops.onChange);
 
-  const nodeClassName = formatClassName(["react-colorful", localprops.class]);
+  const nodeClassName = formatClassName(["solid-colorful", localprops.class]);
 
   createEffect(() => {
     if (props.color !== undefined) {
@@ -31,7 +31,7 @@ export const ColorPicker = <T extends AnyColor>(props: Props<T>): JSX.Element =>
   return (
     <div {...otherprops} ref={nodeRef} class={nodeClassName}>
       <Saturation hsva={hsva()} onChange={handleChange} />
-      <Hue hue={hsva().h} onChange={handleChange} class="react-colorful__last-control" />
+      <Hue hue={hsva().h} onChange={handleChange} class="solid-colorful__last-control" />
     </div>
   );
 };

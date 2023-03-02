@@ -89,7 +89,7 @@ it("Doesn't trigger `onChange` after controlled rerender", () => {
 it("Doesn't call `onChange` when user changes a hue of a grayscale color", () => {
   const handleChange = jest.fn();
   const { container } = render(() => <HexColorPicker color="#000" onChange={handleChange} />);
-  const hue = container.querySelector(".react-colorful__hue .react-colorful__interactive");
+  const hue = container.querySelector(".solid-colorful__hue .solid-colorful__interactive");
 
   fireEvent.touchStart(hue, { touches: [{ pageX: 0, pageY: 0 }] });
   fireEvent.touchMove(hue, { touches: [{ pageX: 100, pageY: 0 }] });
@@ -101,7 +101,7 @@ it("Triggers `onChange` after a mouse interaction", async () => {
   const handleChange = jest.fn();
   const result = render(() => <RgbaColorPicker onChange={handleChange} />);
   const saturation = result.container.querySelector(
-    ".react-colorful__saturation .react-colorful__interactive"
+    ".solid-colorful__saturation .solid-colorful__interactive"
   );
 
   fireEvent(saturation, new FakeMouseEvent("mousedown", { pageX: 0, pageY: 0 }));
@@ -114,7 +114,7 @@ it("Triggers `onChange` after a touch interaction", async () => {
   const handleChange = jest.fn((hsv) => hsv);
   const initialValue = { h: 0, s: 100, v: 100 };
   const result = render(() => <HsvColorPicker color={initialValue} onChange={handleChange} />);
-  const hue = result.container.querySelector(".react-colorful__hue .react-colorful__interactive");
+  const hue = result.container.querySelector(".solid-colorful__hue .solid-colorful__interactive");
 
   fireEvent.touchStart(hue, { touches: [{ pageX: 0, pageY: 0, bubbles: true }] });
   fireEvent.touchMove(hue, { touches: [{ pageX: 55, pageY: 0, bubbles: true }] });
@@ -126,9 +126,9 @@ it("Supports multitouch", async () => {
   const handleChange = jest.fn((hsva) => hsva);
   const initialValue = { h: 0, s: 100, v: 100, a: 0 };
   const result = render(() => <HsvaColorPicker color={initialValue} onChange={handleChange} />);
-  const hue = result.container.querySelector(".react-colorful__hue .react-colorful__interactive");
+  const hue = result.container.querySelector(".solid-colorful__hue .solid-colorful__interactive");
   const alpha = result.container.querySelector(
-    ".react-colorful__alpha .react-colorful__interactive"
+    ".solid-colorful__alpha .solid-colorful__interactive"
   );
 
   const firstFingerBefore = { pageX: 0, pageY: 0, identifier: 0, bubbles: true };
@@ -160,7 +160,7 @@ it("Pointer doesn't follow the mouse if it was released outside of the document 
   const handleChange = jest.fn();
   const result = render(() => <RgbaColorPicker onChange={handleChange} />);
   const saturation = result.container.querySelector(
-    ".react-colorful__saturation .react-colorful__interactive"
+    ".solid-colorful__saturation .solid-colorful__interactive"
   );
 
   // User presses and moves the cursor inside the window
@@ -179,7 +179,7 @@ it("Changes alpha channel value after an interaction", async () => {
 
   const result = render(() => <HslaColorPicker color={initialValue} onChange={handleChange} />);
   const alpha = result.container.querySelector(
-    ".react-colorful__alpha .react-colorful__interactive"
+    ".solid-colorful__alpha .solid-colorful__interactive"
   );
 
   fireEvent(alpha, new FakeMouseEvent("mousedown", { pageX: 0, pageY: 0 }));
@@ -192,7 +192,7 @@ it("Uses #rrggbbaa format if alpha channel value is less than 1", async () => {
   const handleChange = jest.fn((hex) => hex);
   const result = render(() => <HexAlphaColorPicker color="#112233" onChange={handleChange} />);
   const alpha = result.container.querySelector(
-    ".react-colorful__alpha .react-colorful__interactive"
+    ".solid-colorful__alpha .solid-colorful__interactive"
   );
 
   fireEvent(alpha, new FakeMouseEvent("mousedown", { pageX: 100, pageY: 0 }));
@@ -202,11 +202,11 @@ it("Uses #rrggbbaa format if alpha channel value is less than 1", async () => {
 });
 
 // Fast clicks on mobile devices
-// See https://github.com/omgovich/react-colorful/issues/55
-it("Doesn't react on mouse events after a touch interaction", () => {
+// See https://github.com/omgovich/solid-colorful/issues/55
+it("Doesn't solid on mouse events after a touch interaction", () => {
   const handleChange = jest.fn((hslString) => hslString);
   const result = render(() => <HslStringColorPicker color="hsl(100, 0%, 0%)" onChange={handleChange} />);
-  const hue = result.container.querySelector(".react-colorful__hue .react-colorful__interactive");
+  const hue = result.container.querySelector(".solid-colorful__hue .solid-colorful__interactive");
 
   fireEvent.touchStart(hue, { touches: [{ pageX: 0, pageY: 0, bubbles: true }] }); // 1
   fireEvent.touchMove(hue, { touches: [{ pageX: 55, pageY: 0, bubbles: true }] }); // 2
@@ -225,7 +225,7 @@ it("Captures arrow keys only", async () => {
 
   const result = render(() => <HsvStringColorPicker color={initialValue} onChange={handleChange} />);
   const saturation = result.container.querySelector(
-    ".react-colorful__saturation .react-colorful__interactive"
+    ".solid-colorful__saturation .solid-colorful__interactive"
   );
 
   saturation.focus();
@@ -252,7 +252,7 @@ it("Changes saturation with arrow keys", async () => {
 
   const result = render(() => <RgbColorPicker color={initialValue} onChange={handleChange} />);
   const hue = result.container.querySelector(
-    ".react-colorful__saturation .react-colorful__interactive"
+    ".solid-colorful__saturation .solid-colorful__interactive"
   );
 
   hue.focus();
@@ -268,7 +268,7 @@ it("Changes hue with arrow keys", async () => {
   const initialValue = { h: 180, s: 0, l: 50, a: 1 };
 
   const result = render(() => <HslColorPicker color={initialValue} onChange={handleChange} />);
-  const hue = result.container.querySelector(".react-colorful__hue .react-colorful__interactive");
+  const hue = result.container.querySelector(".solid-colorful__hue .solid-colorful__interactive");
 
   hue.focus();
   const node = document.activeElement || document.body;
@@ -283,7 +283,7 @@ it("Changes alpha with arrow keys", async () => {
 
   const result = render(() => <HsvaColorPicker color={initialValue} onChange={handleChange} />);
   const alpha = result.container.querySelector(
-    ".react-colorful__alpha .react-colorful__interactive"
+    ".solid-colorful__alpha .solid-colorful__interactive"
   );
 
   alpha.focus();
@@ -300,7 +300,7 @@ it("Ignores keyboard commands if the pointer is already on a saturation edge", a
   const initialValue = "hsla(200, 0%, 100%, 1)";
   const result = render(() => <HslaStringColorPicker color={initialValue} onChange={handleChange} />);
   const saturation = result.container.querySelector(
-    ".react-colorful__saturation .react-colorful__interactive"
+    ".solid-colorful__saturation .solid-colorful__interactive"
   );
 
   saturation.focus();
@@ -319,7 +319,7 @@ it("Ignores keyboard commands if the pointer is already on a alpha edge", async 
   const initialValue = "hsva(0, 0%, 0%, 1)";
   const result = render(() => <HsvaStringColorPicker color={initialValue} onChange={handleChange} />);
   const saturation = result.container.querySelector(
-    ".react-colorful__alpha .react-colorful__interactive"
+    ".solid-colorful__alpha .solid-colorful__interactive"
   );
 
   saturation.focus();
@@ -334,10 +334,10 @@ it("Sets proper `aria-valuetext` attribute value", async () => {
   const handleChange = jest.fn();
   const result = render(() => <RgbaStringColorPicker color="rgb(0, 0, 0, 0)" onChange={handleChange} />);
   const saturation = result.container.querySelector(
-    ".react-colorful__saturation .react-colorful__interactive"
+    ".solid-colorful__saturation .solid-colorful__interactive"
   );
   const alpha = result.container.querySelector(
-    ".react-colorful__alpha .react-colorful__interactive"
+    ".solid-colorful__alpha .solid-colorful__interactive"
   );
 
   expect(saturation.getAttribute("aria-valuetext")).toBe("Saturation 0%, Brightness 0%");

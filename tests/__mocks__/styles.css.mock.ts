@@ -1,1 +1,1 @@
-export default ".react-colorful{}";
+export default ".solid-colorful{}";

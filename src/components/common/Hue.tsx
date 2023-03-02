@@ -25,7 +25,7 @@ const HueBase = (props: Props) => {
     });
   };
 
-  const nodeClassName = formatClassName(["react-colorful__hue", props.class]);
+  const nodeClassName = formatClassName(["solid-colorful__hue", props.class]);
 
   return (
     <div class={nodeClassName}>
@@ -38,7 +38,7 @@ const HueBase = (props: Props) => {
         aria-valuemin="0"
       >
         <Pointer
-          class="react-colorful__hue-pointer"
+          class="solid-colorful__hue-pointer"
           left={props.hue / 360}
           color={hsvaToHslString({ h: props.hue, s: 100, v: 100, a: 1 })}
         />

@@ -136,7 +136,7 @@ export const Interactive: ParentComponent<Props> = (props: Props) => {
       {...otherprops}
       onTouchStart={handleMoveStart}
       onMouseDown={handleMoveStart}
-      class="react-colorful__interactive"
+      class="solid-colorful__interactive"
       ref={container}
       onKeyDown={handleKeyDown}
       tabIndex={0}

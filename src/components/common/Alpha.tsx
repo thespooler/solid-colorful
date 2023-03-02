@@ -25,11 +25,11 @@ export const Alpha = (props: Props): JSX.Element => {
     props.onChange({ a: clamp(props.hsva.a + offset.left) });
   };
 
-  const nodeClassName = formatClassName(["react-colorful__alpha", props.class]);
+  const nodeClassName = formatClassName(["solid-colorful__alpha", props.class]);
 
   return (
     <div class={nodeClassName}>
-      <div class="react-colorful__alpha-gradient" style={{
+      <div class="solid-colorful__alpha-gradient" style={{
         "background-image": `linear-gradient(90deg, ${hsvaToHslaString({ ...props.hsva, a: 0 })}, ${hsvaToHslaString({ ...props.hsva, a: 1 }) })`,
       }} />
       <Interactive
@@ -42,7 +42,7 @@ export const Alpha = (props: Props): JSX.Element => {
         aria-valuemax="100"
       >
         <Pointer
-          class="react-colorful__alpha-pointer"
+          class="solid-colorful__alpha-pointer"
           left={props.hsva.a}
           color={hsvaToHslaString(props.hsva)}
         />

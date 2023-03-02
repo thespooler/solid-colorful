@@ -1,10 +1,9 @@
-import { createEffect, createSignal } from "solid-js";
+import { createEffect, createResource, createSignal } from "solid-js";
 import { render } from 'solid-js/web';
 
 import { RgbaColor } from "../../src";
 import { DevTools } from "./components/DevTools";
 import { useFaviconColor } from "./hooks/useFaviconColor";
-import { useStargazerCount } from "./hooks/useStargazerCount";
 import {
   GlobalStyles,
   Header,
@@ -37,7 +36,12 @@ const getRandomColor = (): RgbaColor => {
 const Demo = () => {
   const [color, setColor] = createSignal<RgbaColor>(getRandomColor());
   const textColor = getBrightness(color()) > 128 || color().a < 0.5 ? "#000" : "#FFF";
-  const stargazerCount = useStargazerCount();
+  const [stars, { mutate, refetch }] = createResource<number>(async (source, { value, refetching }) => {
+    const result = await fetch("https://api.github.com/repos/thespooler/solid-colorful");
+    if (result.status >= 400 && result.status < 600) return 0;
+    const data = await result.json();
+    return data.stargazers_count;
+  });
 
   createEffect(() => {
     let color_v = color();
@@ -62,21 +66,14 @@ const Demo = () => {
 
           <Links>
             <Link
-              href="https://github.com/omgovich/react-colorful"
+              href="https://github.com/thespooler/solid-colorful"
               target="_blank"
               rel="noreferrer"
             >
               GitHub
               <LinkSeparator />
               <LinkStarIcon />
-              {stargazerCount}
-            </Link>
-            <Link
-              href="https://www.npmjs.com/package/react-colorful"
-              target="_blank"
-              rel="noreferrer"
-            >
-              NPM
+              {stars()}
             </Link>
           </Links>
         </HeaderContent>
