@@ -1,4 +1,4 @@
-import { Component, createEffect, JSX, ParentComponent } from "solid-js";
+import { JSX } from "solid-js";
 
 import { Interactive, Interaction } from "./Interactive";
 import { Pointer } from "./Pointer";
@@ -29,9 +29,13 @@ export const Alpha = (props: Props): JSX.Element => {
 
   return (
     <div class={nodeClassName}>
-      <div class="solid-colorful__alpha-gradient" style={{
-        "background-image": `linear-gradient(90deg, ${hsvaToHslaString({ ...props.hsva, a: 0 })}, ${hsvaToHslaString({ ...props.hsva, a: 1 }) })`,
-      }} />
+      <div
+        class="solid-colorful__alpha-gradient"
+        style={{
+          "background-image": `linear-gradient(90deg, ${hsvaToHslaString({ ...props.hsva, a: 0 })},
+          ${hsvaToHslaString({ ...props.hsva, a: 1 })})`,
+        }}
+      />
       <Interactive
         onMove={handleMove}
         onKey={handleKey}

@@ -60,7 +60,7 @@ interface Props {
 }
 
 export const Interactive: ParentComponent<Props> = (props: Props) => {
-
+  // eslint-disable-next-line prefer-const
   let container: HTMLDivElement | undefined = undefined;
   const [touchId, setTouchId] = createSignal<undefined | number>(undefined);
   const [hasTouch, setHasTouch] = createSignal(false);

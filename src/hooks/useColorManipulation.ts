@@ -1,9 +1,12 @@
-import { Accessor, createContext, createEffect, createMemo, createSignal, mergeProps, on, untrack, useContext } from "solid-js";
+import { createEffect, createSignal, mergeProps, untrack } from "solid-js";
 import { ColorModel, AnyColor, HsvaColor } from "../types";
 import { equalColorObjects } from "../utils/compare";
 
-export function createColorManipulation<T extends AnyColor>(colorModel: ColorModel<T>, color: T, onChange ?: (color: T) => void) {
-
+export function createColorManipulation<T extends AnyColor>(
+  colorModel: ColorModel<T>,
+  color: T,
+  onChange?: (color: T) => void
+) {
   // No matter which color model is used (HEX, RGB(A) or HSL(A)),
   // all internal calculations are based on HSVA model
   const [hsva, updateHsva] = createSignal<HsvaColor>(colorModel.toHsva(color));
@@ -22,14 +25,11 @@ export function createColorManipulation<T extends AnyColor>(colorModel: ColorMod
   // Trigger `onChange` callback only if an updated color is different from cached one;
   // save the new color to the ref to prevent unnecessary updates
   createEffect(() => {
-    let hsva_i = hsva();
-    let newColor = colorModel.fromHsva(hsva_i);
-    if (
-      !equalColorObjects(hsva_i, cache.hsva) &&
-      !colorModel.equal(newColor, cache.color)
-    ) {
+    const hsva_i = hsva();
+    const newColor = colorModel.fromHsva(hsva_i);
+    if (!equalColorObjects(hsva_i, cache.hsva) && !colorModel.equal(newColor, cache.color)) {
       cache = untrack(() => ({ color: newColor, hsva: hsva_i }));
-      if (onChange !== undefined) { onChange(newColor); }
+      if (onChange !== undefined) onChange(newColor);
     }
   });
 
@@ -38,4 +38,4 @@ export function createColorManipulation<T extends AnyColor>(colorModel: ColorMod
   };
 
   return [{ hsva }, { handleChange }] as const;
-};
+}

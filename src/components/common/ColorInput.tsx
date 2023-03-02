@@ -13,9 +13,25 @@ interface Props extends ColorInputBaseProps {
 }
 
 export const ColorInput = (props: Props): JSX.Element => {
-  const [localprops, otherprops] = splitProps(props, ["onBlur", "onChange", "color", "process", "validate", "format", "escape"]);
-  const [value, setValue] = createSignal(localprops.color ? localprops.escape(localprops.color) : undefined);
-  const mergedlocalprops = mergeProps({ format: (f: string | undefined) => f ?? "", process: (p: string) => p }, localprops);
+  const [localprops, otherprops] = splitProps(props, [
+    "onBlur",
+    "onChange",
+    "color",
+    "process",
+    "validate",
+    "format",
+    "escape",
+  ]);
+  const [value, setValue] = createSignal(
+    localprops.color ? localprops.escape(localprops.color) : undefined
+  );
+  const mergedlocalprops = mergeProps(
+    {
+      format: (f: string | undefined) => f ?? "",
+      process: (p: string) => p,
+    },
+    localprops
+  );
 
   // Trigger `onChange` handler only if the input value is a valid color
   const handleChange = (e: Event & { currentTarget: HTMLInputElement; target: Element }) => {
@@ -26,13 +42,15 @@ export const ColorInput = (props: Props): JSX.Element => {
   };
 
   // Take the color from props if the last typed color (in local state) is not valid
-  const handleBlur = (e: FocusEvent & { currentTarget: HTMLInputElement; target: Element; }) => {
+  const handleBlur = (e: FocusEvent & { currentTarget: HTMLInputElement; target: Element }) => {
     if (!localprops.validate(e.currentTarget.value)) {
       const colorValue = localprops.color ? localprops.escape(localprops.color) : undefined;
       setValue(colorValue);
     }
-    let onBlur = localprops.onBlur as JSX.EventHandler<HTMLInputElement, FocusEvent>;
-    if (onBlur !== undefined) { onBlur(e); }
+    const onBlur = localprops.onBlur as JSX.EventHandler<HTMLInputElement, FocusEvent>;
+    if (onBlur !== undefined) {
+      onBlur(e);
+    }
   };
 
   createEffect(() => {
@@ -40,7 +58,7 @@ export const ColorInput = (props: Props): JSX.Element => {
   });
 
   createEffect(() => {
-    let valid_value = value();
+    const valid_value = value();
     if (localprops.onChange !== undefined && valid_value !== undefined) {
       localprops.onChange(mergedlocalprops.process(valid_value));
     }
@@ -55,4 +73,4 @@ export const ColorInput = (props: Props): JSX.Element => {
       onBlur={handleBlur}
     />
   );
-}
+};

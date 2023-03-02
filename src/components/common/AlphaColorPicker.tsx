@@ -1,4 +1,4 @@
-import { createEffect, JSX, splitProps } from 'solid-js';
+import { createEffect, JSX, splitProps } from "solid-js";
 
 import { Hue } from "./Hue";
 import { Saturation } from "./Saturation";
@@ -14,12 +14,19 @@ interface Props<T extends AnyColor> extends Partial<ColorPickerBaseProps<T>> {
 }
 
 export const AlphaColorPicker = <T extends AnyColor>(props: Props<T>): JSX.Element => {
+  // eslint-disable-next-line prefer-const
   let nodeRef: undefined | HTMLDivElement = undefined;
   const [localprops, otherprops] = splitProps(props, ["colorModel", "color", "onChange", "class"]);
 
-  createEffect(() => { if (nodeRef !== undefined) useStyleSheet(nodeRef) });
+  createEffect(() => {
+    if (nodeRef !== undefined) useStyleSheet(nodeRef);
+  });
 
-  const [{ hsva }, { handleChange }] = createColorManipulation(localprops.colorModel, localprops.color || localprops.colorModel.defaultColor, localprops.onChange);
+  const [{ hsva }, { handleChange }] = createColorManipulation(
+    localprops.colorModel,
+    localprops.color || localprops.colorModel.defaultColor,
+    localprops.onChange
+  );
 
   const nodeClass = formatClassName(["solid-colorful", localprops.class]);
 

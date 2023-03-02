@@ -1,6 +1,5 @@
 import { createEffect, createResource, createSignal } from "solid-js";
-import { render } from 'solid-js/web';
-
+import { render } from "solid-js/web";
 import { RgbaColor } from "../../src";
 import { DevTools } from "./components/DevTools";
 import { useFaviconColor } from "./hooks/useFaviconColor";
@@ -36,15 +35,17 @@ const getRandomColor = (): RgbaColor => {
 const Demo = () => {
   const [color, setColor] = createSignal<RgbaColor>(getRandomColor());
   const textColor = getBrightness(color()) > 128 || color().a < 0.5 ? "#000" : "#FFF";
-  const [stars, { mutate, refetch }] = createResource<number>(async (source, { value, refetching }) => {
-    const result = await fetch("https://api.github.com/repos/thespooler/solid-colorful");
-    if (result.status >= 400 && result.status < 600) return 0;
-    const data = await result.json();
-    return data.stargazers_count;
-  });
+  const [stars, { mutate, refetch }] = createResource<number>(
+    async (source, { value, refetching }) => {
+      const result = await fetch("https://api.github.com/repos/thespooler/solid-colorful");
+      if (result.status >= 400 && result.status < 600) return 0;
+      const data = await result.json();
+      return data.stargazers_count;
+    }
+  );
 
   createEffect(() => {
-    let color_v = color();
+    const color_v = color();
     const colorString = `rgba(${color_v.r}, ${color_v.g}, ${color_v.b}, ${color_v.a}`;
     document.body.style.backgroundColor = colorString;
     useFaviconColor(colorString);

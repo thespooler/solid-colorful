@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-import { createEffect, createSignal } from "solid-js";
+import { createSignal } from "solid-js";
 import { JSX } from "solid-js/jsx-runtime";
 import { HexColorInput } from "../../../src";
 import { ColorPickerBaseProps, AnyColor } from "../../../src/types";

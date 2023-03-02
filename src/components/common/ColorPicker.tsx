@@ -14,16 +14,22 @@ interface Props<T extends AnyColor> extends Partial<ColorPickerBaseProps<T>> {
 export const ColorPicker = <T extends AnyColor>(props: Props<T>): JSX.Element => {
   let nodeRef: HTMLDivElement | undefined;
   const [localprops, otherprops] = splitProps(props, ["colorModel", "color", "onChange", "class"]);
-  
-  createEffect(() => { if (nodeRef !== undefined) useStyleSheet(nodeRef) });
 
-  const [{ hsva }, { handleChange }] = createColorManipulation(localprops.colorModel, localprops.color || localprops.colorModel.defaultColor, localprops.onChange);
+  createEffect(() => {
+    if (nodeRef !== undefined) useStyleSheet(nodeRef);
+  });
+
+  const [{ hsva }, { handleChange }] = createColorManipulation(
+    localprops.colorModel,
+    localprops.color || localprops.colorModel.defaultColor,
+    localprops.onChange
+  );
 
   const nodeClassName = formatClassName(["solid-colorful", localprops.class]);
 
   createEffect(() => {
     if (props.color !== undefined) {
-      let hsva = props.colorModel.toHsva(props.color);
+      const hsva = props.colorModel.toHsva(props.color);
       handleChange(hsva);
     }
   });

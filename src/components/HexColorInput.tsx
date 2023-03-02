@@ -11,7 +11,7 @@ interface HexColorInputProps extends ColorInputBaseProps {
 }
 
 /** Adds "#" symbol to the beginning of the string */
-const prefix = (value: string | undefined) => value ? "#" + value : "";
+const prefix = (value: string | undefined) => (value ? "#" + value : "");
 const no_prefix = (value: string | undefined) => value ?? "";
 
 export const HexColorInput = (props: HexColorInputProps): JSX.Element => {
@@ -20,8 +20,10 @@ export const HexColorInput = (props: HexColorInputProps): JSX.Element => {
   return (
     <ColorInput
       {...otherprops}
-      escape={(value: string) => value.replace(/([^0-9A-F]+)/gi, "").substring(0, localprops.alpha ? 8 : 6)}
-      format={localprops.prefixed ? prefix : no_prefix }
+      escape={(value: string) =>
+        value.replace(/([^0-9A-F]+)/gi, "").substring(0, localprops.alpha ? 8 : 6)
+      }
+      format={localprops.prefixed ? prefix : no_prefix}
       process={prefix}
       validate={(value: string) => validHex(value, localprops.alpha)}
     />

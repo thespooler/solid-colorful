@@ -1,5 +1,4 @@
 import { JSX } from "solid-js/jsx-runtime";
-
 import { PickerPreview } from "./PickerPreview";
 import {
   // HEX
@@ -31,15 +30,10 @@ import {
   HsvaStringColorPicker,
 } from "../../../src";
 
-
 export const DevTools = (): JSX.Element => {
   return (
     <div>
-      <PickerPreview<string> 
-        title="HEX" 
-        PickerComponent={HexColorPicker} 
-        initialColor="#406090" 
-      />
+      <PickerPreview<string> title="HEX" PickerComponent={HexColorPicker} initialColor="#406090" />
       <PickerPreview<string>
         title="HEX Alpha"
         PickerComponent={HexAlphaColorPicker}

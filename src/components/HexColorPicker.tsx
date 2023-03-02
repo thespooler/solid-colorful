@@ -12,5 +12,5 @@ const hexColorModel: ColorModel<string> = {
 };
 
 export const HexColorPicker = (props: Partial<ColorPickerBaseProps<string>>): JSX.Element => {
-  return <ColorPicker {...props} colorModel={hexColorModel} />
+  return <ColorPicker {...props} colorModel={hexColorModel} />;
 };

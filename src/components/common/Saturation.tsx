@@ -4,7 +4,6 @@ import { HsvaColor } from "../../types";
 import { hsvaToHslString } from "../../utils/convert";
 import { clamp } from "../../utils/clamp";
 import { round } from "../../utils/round";
-import { createEffect, JSX } from "solid-js";
 
 interface Props {
   hsva: HsvaColor;
@@ -28,9 +27,12 @@ export const Saturation = (props: Props) => {
   };
 
   return (
-    <div class="solid-colorful__saturation" style={{
-      "background-color": hsvaToHslString({ h: props.hsva.h, s: 100, v: 100, a: 1 }),
-    }}>
+    <div
+      class="solid-colorful__saturation"
+      style={{
+        "background-color": hsvaToHslString({ h: props.hsva.h, s: 100, v: 100, a: 1 }),
+      }}
+    >
       <Interactive
         onMove={handleMove}
         onKey={handleKey}
