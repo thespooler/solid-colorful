@@ -1,16 +1,14 @@
 {
   "types": ["jest", "@testing-library/jest-dom"],
   "compilerOptions": {
-    "strict": true,
     "target": "ESNext",
     "module": "ESNext",
-    "moduleResolution": "node",
-    "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "jsx": "preserve",
     "jsxImportSource": "solid-js",
-    "noEmit": true,
-    "isolatedModules": true,
+    "moduleResolution": "node",
+    "declaration": true,
+    "strict": true,
   },
-  "include": ["./src/**/*", "./test/**/*", "./demo/src/**/*"]
+  "include": ["./src/**/*", "./tests/**/*", "./demo/src/**/*"]
 }

@@ -29,6 +29,7 @@ import { equalColorObjects, equalColorString } from "../src/utils/compare";
 import { formatClassName } from "../src/utils/format";
 import { clamp } from "../src/utils/clamp";
 import { round } from "../src/utils/round";
+import { HslaColor, HsvaColor, RgbaColor } from "../src";
 
 it("Converts HEX to HSVA", () => {
   expect(hexToHsva("#ffffff")).toMatchObject({ h: 0, s: 0, v: 100, a: 1 });
@@ -54,7 +55,8 @@ it("Converts HSVA to HEX", () => {
 });
 
 it("Converts HSVA to HSLA", () => {
-  let test = (input, output) => expect(hsvaToHsla(input)).toMatchObject(output);
+  const test = (input: HsvaColor, output: HslaColor) =>
+    expect(hsvaToHsla(input)).toMatchObject(output);
 
   test({ h: 0, s: 0, v: 100, a: 1 }, { h: 0, s: 0, l: 100, a: 1 });
   test({ h: 60, s: 100, v: 100, a: 1 }, { h: 60, s: 100, l: 50, a: 1 });
@@ -64,7 +66,8 @@ it("Converts HSVA to HSLA", () => {
 });
 
 it("Converts HSLA to HSVA", () => {
-  let test = (input, output) => expect(hslaToHsva(input)).toMatchObject(output);
+  const test = (input: HslaColor, output: HsvaColor) =>
+    expect(hslaToHsva(input)).toMatchObject(output);
 
   test({ h: 0, s: 0, l: 100, a: 1 }, { h: 0, s: 0, v: 100, a: 1 });
   test({ h: 60, s: 100, l: 50, a: 1 }, { h: 60, s: 100, v: 100, a: 1 });
@@ -86,7 +89,8 @@ it("Converts HSL string to HSVA", () => {
 });
 
 it("Converts HSLA string to HSVA", () => {
-  let test = (input, output) => expect(hslaStringToHsva(input)).toMatchObject(output);
+  const test = (input: string, output: HsvaColor) =>
+    expect(hslaStringToHsva(input)).toMatchObject(output);
 
   test("hsla(0deg, 0%, 0%, 0.5)", { h: 0, s: 0, v: 0, a: 0.5 });
   test("hsla(200, 25%, 32%, 1)", { h: 200, s: 40, v: 40, a: 1 });
@@ -94,7 +98,8 @@ it("Converts HSLA string to HSVA", () => {
 });
 
 it("Converts HSVA to RGBA", () => {
-  let test = (input, output) => expect(hsvaToRgba(input)).toMatchObject(output);
+  const test = (input: HsvaColor, output: RgbaColor) =>
+    expect(hsvaToRgba(input)).toMatchObject(output);
 
   test({ h: 0, s: 0, v: 100, a: 1 }, { r: 255, g: 255, b: 255, a: 1 });
   test({ h: 0, s: 100, v: 100, a: 0.567 }, { r: 255, g: 0, b: 0, a: 0.57 });
@@ -119,12 +124,13 @@ it("Converts HSVA to RGB string", () => {
 });
 
 it("Converts HSVA to RGBA string", () => {
-  let test = (input, output) => expect(hsvaToRgbaString(input)).toBe(output);
+  const test = (input: HsvaColor, output: string) => expect(hsvaToRgbaString(input)).toBe(output);
   test({ h: 200, s: 40, v: 40, a: 0.5 }, "rgba(61, 88, 102, 0.5)");
 });
 
 it("Converts RGBA string to HSVA", () => {
-  let test = (input, output) => expect(rgbaStringToHsva(input)).toMatchObject(output);
+  const test = (input: string, output: HsvaColor) =>
+    expect(rgbaStringToHsva(input)).toMatchObject(output);
   test("rgba(61, 88, 102, 0.5)", { h: 200, s: 40, v: 40, a: 0.5 });
   test("rgba(23.9% 34.5% 40% / 99%)", { h: 200, s: 40, v: 40, a: 0.99 });
 });
@@ -154,7 +160,8 @@ it("Converts HSVA string to HSVA", () => {
 });
 
 it("Rounds HSVA", () => {
-  let test = (input, output) => expect(roundHsva(input)).toMatchObject(output);
+  const test = (input: HsvaColor, output: HsvaColor) =>
+    expect(roundHsva(input)).toMatchObject(output);
 
   test({ h: 1, s: 1, v: 1, a: 1 }, { h: 1, s: 1, v: 1, a: 1 });
   test({ h: 3.3333, s: 4.4444, v: 5.5555, a: 0.6789 }, { h: 3, s: 4, v: 6, a: 0.68 });
@@ -199,8 +206,8 @@ it("Validates HEX colors", () => {
   expect(validHex("#12345")).toBe(false);
   // empty
   expect(validHex("")).toBe(false);
-  expect(validHex(null)).toBe(false);
-  expect(validHex()).toBe(false);
+  expect(validHex(null as unknown as string)).toBe(false);
+  expect(validHex(undefined as unknown as string)).toBe(false);
 });
 
 it("Formats a class name", () => {

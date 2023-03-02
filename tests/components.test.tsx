@@ -1,5 +1,4 @@
-import { render, cleanup, fireEvent, waitFor } from "@solidjs/testing-library";
-import { createSignal } from "solid-js";
+import { render, cleanup, fireEvent } from "@solidjs/testing-library";
 import {
   HexColorInput,
   HexColorPicker,
@@ -23,7 +22,10 @@ afterEach(cleanup);
 // Fix to pass `pageX` and `pageY`
 // See https://github.com/testing-library/react-testing-library/issues/268
 class FakeMouseEvent extends MouseEvent {
-  constructor(type, values = {}) {
+  constructor(
+    type: string,
+    values: Partial<{ pageX: number; pageY: number; buttons: number }> = {}
+  ) {
     super(type, { buttons: 1, bubbles: true, ...values });
 
     Object.assign(this, {
@@ -65,9 +67,9 @@ it("Works with no props", () => {
 });
 
 it("Accepts an additional `className`", () => {
-  const result = render(() => <RgbColorPicker className="custom-picker" />);
+  const result = render(() => <RgbColorPicker class="custom-picker" />);
 
-  const hasClass = result.container.firstChild.classList.contains("custom-picker");
+  const hasClass = result.container.firstElementChild?.classList.contains("custom-picker");
   expect(hasClass).toBe(true);
 });
 
@@ -91,6 +93,10 @@ it("Doesn't call `onChange` when user changes a hue of a grayscale color", () =>
   const { container } = render(() => <HexColorPicker color="#000" onChange={handleChange} />);
   const hue = container.querySelector(".solid-colorful__hue .solid-colorful__interactive");
 
+  if (hue === null) {
+    fail("Unable to target picker");
+  }
+
   fireEvent.touchStart(hue, { touches: [{ pageX: 0, pageY: 0 }] });
   fireEvent.touchMove(hue, { touches: [{ pageX: 100, pageY: 0 }] });
 
@@ -104,6 +110,10 @@ it("Triggers `onChange` after a mouse interaction", async () => {
     ".solid-colorful__saturation .solid-colorful__interactive"
   );
 
+  if (saturation === null) {
+    fail("Unable to target picker");
+  }
+
   fireEvent(saturation, new FakeMouseEvent("mousedown", { pageX: 0, pageY: 0 }));
   fireEvent(saturation, new FakeMouseEvent("mousemove", { pageX: 10, pageY: 10 }));
 
@@ -115,6 +125,10 @@ it("Triggers `onChange` after a touch interaction", async () => {
   const initialValue = { h: 0, s: 100, v: 100 };
   const result = render(() => <HsvColorPicker color={initialValue} onChange={handleChange} />);
   const hue = result.container.querySelector(".solid-colorful__hue .solid-colorful__interactive");
+
+  if (hue === null) {
+    fail("Unable to target picker");
+  }
 
   fireEvent.touchStart(hue, { touches: [{ pageX: 0, pageY: 0, bubbles: true }] });
   fireEvent.touchMove(hue, { touches: [{ pageX: 55, pageY: 0, bubbles: true }] });
@@ -138,6 +152,10 @@ it("Supports multitouch", async () => {
   const secondFingerAfter = { pageX: 200, pageY: 0, identifier: 1, bubbles: true };
 
   const extraTouch = { pageX: 10, pageY: 10, identifier: 2, bubbles: true };
+
+  if (hue === null || alpha === null) {
+    fail("Unable to target picker");
+  }
 
   fireEvent.touchStart(hue, {
     changedTouches: [firstFingerBefore],
@@ -163,6 +181,10 @@ it("Pointer doesn't follow the mouse if it was released outside of the document 
     ".solid-colorful__saturation .solid-colorful__interactive"
   );
 
+  if (saturation === null) {
+    fail("Unable to target picker");
+  }
+
   // User presses and moves the cursor inside the window
   fireEvent(saturation, new FakeMouseEvent("mousedown", { pageX: 20, pageY: 10 })); // 1
   fireEvent(saturation, new FakeMouseEvent("mousemove", { pageX: 10, pageY: 10 })); // 2
@@ -182,6 +204,10 @@ it("Changes alpha channel value after an interaction", async () => {
     ".solid-colorful__alpha .solid-colorful__interactive"
   );
 
+  if (alpha === null) {
+    fail("Unable to target picker");
+  }
+
   fireEvent(alpha, new FakeMouseEvent("mousedown", { pageX: 0, pageY: 0 }));
   fireEvent(alpha, new FakeMouseEvent("mousemove", { pageX: 105, pageY: 0 }));
 
@@ -195,6 +221,10 @@ it("Uses #rrggbbaa format if alpha channel value is less than 1", async () => {
     ".solid-colorful__alpha .solid-colorful__interactive"
   );
 
+  if (alpha === null) {
+    fail("Unable to target picker");
+  }
+
   fireEvent(alpha, new FakeMouseEvent("mousedown", { pageX: 100, pageY: 0 }));
   fireEvent(alpha, new FakeMouseEvent("mousemove", { pageX: 0, pageY: 0 }));
 
@@ -205,8 +235,14 @@ it("Uses #rrggbbaa format if alpha channel value is less than 1", async () => {
 // See https://github.com/omgovich/solid-colorful/issues/55
 it("Doesn't solid on mouse events after a touch interaction", () => {
   const handleChange = jest.fn((hslString) => hslString);
-  const result = render(() => <HslStringColorPicker color="hsl(100, 0%, 0%)" onChange={handleChange} />);
+  const result = render(() => (
+    <HslStringColorPicker color="hsl(100, 0%, 0%)" onChange={handleChange} />
+  ));
   const hue = result.container.querySelector(".solid-colorful__hue .solid-colorful__interactive");
+
+  if (hue === null) {
+    fail("Unable to target picker");
+  }
 
   fireEvent.touchStart(hue, { touches: [{ pageX: 0, pageY: 0, bubbles: true }] }); // 1
   fireEvent.touchMove(hue, { touches: [{ pageX: 55, pageY: 0, bubbles: true }] }); // 2
@@ -223,10 +259,16 @@ it("Captures arrow keys only", async () => {
   const handleChange = jest.fn((hex) => hex);
   const initialValue = "hsv(180, 90%, 90%)";
 
-  const result = render(() => <HsvStringColorPicker color={initialValue} onChange={handleChange} />);
-  const saturation = result.container.querySelector(
+  const result = render(() => (
+    <HsvStringColorPicker color={initialValue} onChange={handleChange} />
+  ));
+  const saturation = result.container.querySelector<HTMLDivElement>(
     ".solid-colorful__saturation .solid-colorful__interactive"
   );
+
+  if (saturation === null) {
+    fail("Unable to target picker");
+  }
 
   saturation.focus();
   const node = document.activeElement || document.body;
@@ -253,7 +295,11 @@ it("Changes saturation with arrow keys", async () => {
   const result = render(() => <RgbColorPicker color={initialValue} onChange={handleChange} />);
   const hue = result.container.querySelector(
     ".solid-colorful__saturation .solid-colorful__interactive"
-  );
+  ) as HTMLInputElement;
+
+  if (hue === null) {
+    fail("Unable to target picker");
+  }
 
   hue.focus();
   const node = document.activeElement || document.body;
@@ -268,7 +314,13 @@ it("Changes hue with arrow keys", async () => {
   const initialValue = { h: 180, s: 0, l: 50, a: 1 };
 
   const result = render(() => <HslColorPicker color={initialValue} onChange={handleChange} />);
-  const hue = result.container.querySelector(".solid-colorful__hue .solid-colorful__interactive");
+  const hue = result.container.querySelector(
+    ".solid-colorful__hue .solid-colorful__interactive"
+  ) as HTMLInputElement;
+
+  if (hue === null) {
+    fail("Unable to target picker");
+  }
 
   hue.focus();
   const node = document.activeElement || document.body;
@@ -284,7 +336,11 @@ it("Changes alpha with arrow keys", async () => {
   const result = render(() => <HsvaColorPicker color={initialValue} onChange={handleChange} />);
   const alpha = result.container.querySelector(
     ".solid-colorful__alpha .solid-colorful__interactive"
-  );
+  ) as HTMLInputElement;
+
+  if (alpha === null) {
+    fail("Unable to target picker");
+  }
 
   alpha.focus();
   const node = document.activeElement || document.body;
@@ -298,10 +354,16 @@ it("Ignores keyboard commands if the pointer is already on a saturation edge", a
 
   // Place pointer to the left-top corner of the saturation area
   const initialValue = "hsla(200, 0%, 100%, 1)";
-  const result = render(() => <HslaStringColorPicker color={initialValue} onChange={handleChange} />);
+  const result = render(() => (
+    <HslaStringColorPicker color={initialValue} onChange={handleChange} />
+  ));
   const saturation = result.container.querySelector(
     ".solid-colorful__saturation .solid-colorful__interactive"
-  );
+  ) as HTMLInputElement;
+
+  if (saturation === null) {
+    fail("Unable to target picker");
+  }
 
   saturation.focus();
   const node = document.activeElement || document.body;
@@ -317,10 +379,16 @@ it("Ignores keyboard commands if the pointer is already on a alpha edge", async 
 
   // Place pointer to the right side of the alpha area
   const initialValue = "hsva(0, 0%, 0%, 1)";
-  const result = render(() => <HsvaStringColorPicker color={initialValue} onChange={handleChange} />);
+  const result = render(() => (
+    <HsvaStringColorPicker color={initialValue} onChange={handleChange} />
+  ));
   const saturation = result.container.querySelector(
     ".solid-colorful__alpha .solid-colorful__interactive"
-  );
+  ) as HTMLInputElement;
+
+  if (saturation === null) {
+    fail("Unable to target picker");
+  }
 
   saturation.focus();
   const node = document.activeElement || document.body;
@@ -332,13 +400,19 @@ it("Ignores keyboard commands if the pointer is already on a alpha edge", async 
 
 it("Sets proper `aria-valuetext` attribute value", async () => {
   const handleChange = jest.fn();
-  const result = render(() => <RgbaStringColorPicker color="rgb(0, 0, 0, 0)" onChange={handleChange} />);
+  const result = render(() => (
+    <RgbaStringColorPicker color="rgb(0, 0, 0, 0)" onChange={handleChange} />
+  ));
   const saturation = result.container.querySelector(
     ".solid-colorful__saturation .solid-colorful__interactive"
   );
   const alpha = result.container.querySelector(
     ".solid-colorful__alpha .solid-colorful__interactive"
   );
+
+  if (saturation === null || alpha === null) {
+    fail("Unable to target picker");
+  }
 
   expect(saturation.getAttribute("aria-valuetext")).toBe("Saturation 0%, Brightness 0%");
   expect(alpha.getAttribute("aria-valuetext")).toBe("0%");
@@ -361,17 +435,27 @@ it("Accepts any valid `div` attributes", () => {
 it("Supports any event that a regular div does", () => {
   const handleHover = jest.fn();
   const result = render(() => <HsvaColorPicker onMouseEnter={handleHover} />);
+
+  if (result.container.firstChild === null) {
+    fail("Unable to target picker");
+  }
+
   fireEvent.mouseEnter(result.container.firstChild);
 
   expect(handleHover).toHaveReturnedTimes(1);
 });
 
 it("Renders `HexColorInput` component properly", () => {
-  const result = render(
-    () => <HexColorInput class="custom-input" color="#F00" placeholder="AABBCC" />
-  );
+  const result = render(() => (
+    <HexColorInput class="custom-input" color="#F00" placeholder="AABBCC" />
+  ));
+  const input = result.container.firstElementChild as HTMLInputElement | null;
 
-  expect(result.container.firstChild.value).toBe("F00");
+  if (input === null) {
+    fail("Unable to target picker input");
+  }
+
+  expect(input.value).toBe("F00");
 
   expect(result.container.firstChild).toMatchSnapshot();
 });
@@ -380,6 +464,10 @@ it("Fires `onChange` when user changes `HexColorInput` value", () => {
   const handleChange = jest.fn((hex) => hex);
   const result = render(() => <HexColorInput onChange={handleChange} />);
   const input = result.container.firstChild;
+
+  if (input === null) {
+    fail("Unable to target picker input");
+  }
 
   fireEvent.change(input, { target: { value: "112233" } });
 
@@ -391,6 +479,10 @@ it("Fires custom `onBlur` when `HexColorInput` has lost focus", () => {
   const result = render(() => <HexColorInput color="#ffffff" onBlur={handleBlur} />);
   const input = result.container.firstChild;
 
+  if (input === null) {
+    fail("Unable to target picker input");
+  }
+
   fireEvent.blur(input);
 
   expect(handleBlur).toHaveReturnedWith("ffffff");
@@ -398,7 +490,11 @@ it("Fires custom `onBlur` when `HexColorInput` has lost focus", () => {
 
 it("Displays `#` prefix in `HexColorInput` if `prefixed` is turned on", () => {
   const result = render(() => <HexColorInput color="111" prefixed />);
-  const input = result.container.firstChild;
+  const input = result.container.firstElementChild as HTMLInputElement | null;
+
+  if (input === null) {
+    fail("Unable to target picker input");
+  }
   expect(input.value).toBe("#111");
 
   fireEvent.change(input, { target: { value: "112233" } });
@@ -407,7 +503,12 @@ it("Displays `#` prefix in `HexColorInput` if `prefixed` is turned on", () => {
 
 it("Allows to enter `#rgba` and `#rrggbbaa` in `HexColorInput` if `alpha` is turned on", () => {
   const result = render(() => <HexColorInput color="112233" alpha />);
-  const input = result.container.firstChild;
+  const input = result.container.firstElementChild as HTMLInputElement | null;
+
+  if (input === null) {
+    fail("Unable to target picker input");
+  }
+
   expect(input.value).toBe("112233");
 
   fireEvent.change(input, { target: { value: "11223344" } });
@@ -419,7 +520,12 @@ it("Allows to enter `#rgba` and `#rrggbbaa` in `HexColorInput` if `alpha` is tur
 
 it("Does not allow to enter `#rrggbbaa` in `HexColorInput` if `alpha` is turned off", () => {
   const result = render(() => <HexColorInput color="aabbcc" />);
-  const input = result.container.firstChild;
+  const input = result.container.firstElementChild as HTMLInputElement | null;
+
+  if (input === null) {
+    fail("Unable to target picker input");
+  }
+
   expect(input.value).toBe("aabbcc");
 
   fireEvent.change(input, { target: { value: "11223344" } });

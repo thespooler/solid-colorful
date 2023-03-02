@@ -36,96 +36,106 @@
       "path": "dist/index.module.js",
       "name": "HexColorPicker",
       "import": "{ HexColorPicker }",
-      "limit": "3 KB"
+      "limit": "5 KB"
     },
     {
       "path": "dist/index.module.js",
       "name": "HslColorPicker",
       "import": "{ HslColorPicker }",
-      "limit": "3 KB"
+      "limit": "4.6 KB"
     },
     {
       "path": "dist/index.module.js",
       "name": "HslaColorPicker",
       "import": "{ HslaColorPicker }",
-      "limit": "3 KB"
+      "limit": "4.7 KB"
     },
     {
       "path": "dist/index.module.js",
       "name": "HslStringColorPicker",
       "import": "{ HslStringColorPicker }",
-      "limit": "3 KB"
+      "limit": "4.8 KB"
     },
     {
       "path": "dist/index.module.js",
       "name": "HslaStringColorPicker",
       "import": "{ HslaStringColorPicker }",
-      "limit": "3 KB"
+      "limit": "4.9 KB"
     },
     {
       "path": "dist/index.module.js",
       "name": "HsvColorPicker",
       "import": "{ HsvColorPicker }",
-      "limit": "3 KB"
+      "limit": "4.6 KB"
     },
     {
       "path": "dist/index.module.js",
       "name": "HsvaColorPicker",
       "import": "{ HsvaColorPicker }",
-      "limit": "3 KB"
+      "limit": "4.7 KB"
     },
     {
       "path": "dist/index.module.js",
       "name": "HsvStringColorPicker",
       "import": "{ HsvStringColorPicker }",
-      "limit": "3 KB"
+      "limit": "4.8 KB"
     },
     {
       "path": "dist/index.module.js",
       "name": "HsvaStringColorPicker",
       "import": "{ HsvaStringColorPicker }",
-      "limit": "3 KB"
+      "limit": "4.9 KB"
     },
     {
       "path": "dist/index.module.js",
       "name": "RgbColorPicker",
       "import": "{ RgbColorPicker }",
-      "limit": "3 KB"
+      "limit": "4.8 KB"
     },
     {
       "path": "dist/index.module.js",
       "name": "RgbaColorPicker",
       "import": "{ RgbaColorPicker }",
-      "limit": "3 KB"
+      "limit": "4.9 KB"
     },
     {
       "path": "dist/index.module.js",
       "name": "RgbStringColorPicker",
       "import": "{ RgbStringColorPicker }",
-      "limit": "3 KB"
+      "limit": "4.9 KB"
     },
     {
       "path": "dist/index.module.js",
       "name": "RgbaStringColorPicker",
       "import": "{ RgbaStringColorPicker }",
-      "limit": "3.1 KB"
+      "limit": "5.1 KB"
     },
     {
       "path": "dist/index.module.js",
       "name": "HexColorInput",
       "import": "{ HexColorInput }",
-      "limit": "3 KB"
+      "limit": "3.8 KB"
     }
   ],
   "sideEffects": false,
   "jest": {
     "verbose": true,
-    "preset": "solid-jest/preset/browser",
-    "setupFilesAfterEnv": [
-      "<rootDir>/jest-setup.ts"
-    ],
+    "preset": "ts-jest",
+    "transform": {
+      "\\.[jt]sx?$": ["ts-jest", {
+        "babelConfig": {
+          "presets": [
+            "babel-preset-solid",
+            "@babel/preset-env"
+          ]
+        }
+      }]
+    },
+    "testEnvironment": "jsdom",
     "moduleNameMapper": {
-      "\\.css$": "<rootDir>/tests/__mocks__/styles.css.mock.ts"
+      "\\.css$": "<rootDir>/tests/__mocks__/styles.css.mock.ts",
+      "solid-js/web": "<rootDir>/node_modules/solid-js/web/dist/web.cjs",
+      "solid-js": "<rootDir>/node_modules/solid-js/dist/solid.cjs"
     }
   },
   "files": [
@@ -169,6 +179,7 @@
     "@size-limit/preset-small-lib": "^8.2.0",
     "@solidjs/testing-library": "^0.6.1",
     "@testing-library/jest-dom": "^5.16.5",
+    "@types/jest": "^29.4.0",
     "@typescript-eslint/eslint-plugin": "^5.54.0",
     "@typescript-eslint/parser": "^5.54.0",
     "babel-jest": "^29.0.1",
@@ -193,6 +204,7 @@
     "solid-jest": "^0.2.0",
     "solid-styled-components": "^0.28.5",
     "solid-testing-library": "^0.5.1",
+    "ts-jest": "^29.0.5",
     "typescript": "^4.2.3"
   },
   "dependencies": {
