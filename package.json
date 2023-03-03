@@ -1,5 +1,5 @@
 {
-  "name": "solid-colorful",
+  "name": "@thespooler/solid-colorful",
   "version": "5.6.1",
   "description": "🎨 A tiny (2,8 KB) color picker component for Solid apps. Fast, well-tested, dependency-free, mobile-friendly and accessible",
   "source": "src/index.ts",
@@ -29,7 +29,8 @@
     "release": "npm publish",
     "start-demo": "parcel demo/src/index.html --out-dir demo/dist --open",
     "build-demo": "del-cli 'demo/dist/*' && parcel build demo/src/index.html --out-dir demo/dist --public-url https://omgovich.github.io/solid-colorful/",
-    "deploy-demo": "npm run build-demo && gh-pages -d demo/dist"
+    "deploy-demo": "npm run build-demo && gh-pages -d demo/dist",
+    "install": "npm run build"
   },
   "size-limit": [
     {
