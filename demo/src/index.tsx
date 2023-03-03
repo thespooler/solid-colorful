@@ -34,15 +34,12 @@ const getRandomColor = (): RgbaColor => {
 
 const Demo = () => {
   const [color, setColor] = createSignal<RgbaColor>(getRandomColor());
-  const textColor = getBrightness(color()) > 128 || color().a < 0.5 ? "#000" : "#FFF";
-  const [stars, { mutate, refetch }] = createResource<number>(
-    async (source, { value, refetching }) => {
-      const result = await fetch("https://api.github.com/repos/thespooler/solid-colorful");
-      if (result.status >= 400 && result.status < 600) return 0;
-      const data = await result.json();
-      return data.stargazers_count;
-    }
-  );
+  const [stars] = createResource<number>(async () => {
+    const result = await fetch("https://api.github.com/repos/thespooler/solid-colorful");
+    if (result.status >= 400 && result.status < 600) return 0;
+    const data = await result.json();
+    return data.stargazers_count;
+  });
 
   createEffect(() => {
     const color_v = color();
@@ -55,7 +52,7 @@ const Demo = () => {
     <div>
       <GlobalStyles />
 
-      <Header style={{ color: textColor }}>
+      <Header style={{ color: getBrightness(color()) > 128 || color().a < 0.5 ? "#000" : "#FFF" }}>
         <HeaderDemo>
           <HeaderDemoPicker color={color()} onChange={setColor} />
         </HeaderDemo>
@@ -85,4 +82,5 @@ const Demo = () => {
   );
 };
 
-render(() => <Demo />, document.getElementById("root")!);
+const root = document.getElementById("root");
+if (root !== null) render(() => <Demo />, root);

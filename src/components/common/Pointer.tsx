@@ -9,11 +9,10 @@ interface Props {
 }
 
 export const Pointer: Component<Props> = (props: Props) => {
-  const nodeClassName = formatClassName(["solid-colorful__pointer", props.class]);
   const mergedProps = mergeProps({ top: 0.5 }, props);
   return (
     <div
-      class={nodeClassName}
+      class={formatClassName(["solid-colorful__pointer", props.class])}
       style={{
         top: `${mergedProps.top * 100}%`,
         left: `${mergedProps.left * 100}%`,

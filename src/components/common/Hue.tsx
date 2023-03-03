@@ -24,10 +24,8 @@ const HueBase = (props: Props) => {
     });
   };
 
-  const nodeClassName = formatClassName(["solid-colorful__hue", props.class]);
-
   return (
-    <div class={nodeClassName}>
+    <div class={formatClassName(["solid-colorful__hue", props.class])}>
       <Interactive
         onMove={handleMove}
         onKey={handleKey}

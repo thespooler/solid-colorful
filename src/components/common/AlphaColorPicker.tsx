@@ -1,4 +1,4 @@
-import { createEffect, JSX, splitProps } from "solid-js";
+import { createEffect, createMemo, JSX, splitProps } from "solid-js";
 
 import { Hue } from "./Hue";
 import { Saturation } from "./Saturation";
@@ -28,10 +28,12 @@ export const AlphaColorPicker = <T extends AnyColor>(props: Props<T>): JSX.Eleme
     localprops.onChange
   );
 
-  const nodeClass = formatClassName(["solid-colorful", localprops.class]);
-
   return (
-    <div {...otherprops} ref={nodeRef} class={nodeClass}>
+    <div
+      {...otherprops}
+      ref={nodeRef}
+      class={formatClassName(["solid-colorful", localprops.class])}
+    >
       <Saturation hsva={hsva()} onChange={handleChange} />
       <Hue hue={hsva().h} onChange={handleChange} />
       <Alpha hsva={hsva()} onChange={handleChange} class="solid-colorful__last-control" />

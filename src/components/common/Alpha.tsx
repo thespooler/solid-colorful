@@ -25,10 +25,8 @@ export const Alpha = (props: Props): JSX.Element => {
     props.onChange({ a: clamp(props.hsva.a + offset.left) });
   };
 
-  const nodeClassName = formatClassName(["solid-colorful__alpha", props.class]);
-
   return (
-    <div class={nodeClassName}>
+    <div class={formatClassName(["solid-colorful__alpha", props.class])}>
       <div
         class="solid-colorful__alpha-gradient"
         style={{

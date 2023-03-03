@@ -34,7 +34,10 @@ export function createColorManipulation<T extends AnyColor>(
   });
 
   const handleChange = (params: Partial<HsvaColor>) => {
-    updateHsva((current) => mergeProps(current, params));
+    updateHsva((current) => {
+      const merged = mergeProps(current, params);
+      return merged;
+    });
   };
 
   return [{ hsva }, { handleChange }] as const;

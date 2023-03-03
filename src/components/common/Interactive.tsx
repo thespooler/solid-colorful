@@ -1,4 +1,4 @@
-import { children, createSignal, ParentComponent, splitProps } from "solid-js";
+import { createSignal, ParentComponent, splitProps } from "solid-js";
 import { JSX } from "solid-js";
 import { clamp } from "../../utils/clamp";
 
