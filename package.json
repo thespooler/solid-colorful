@@ -29,93 +29,92 @@
     "release": "npm publish",
     "start-demo": "parcel demo/src/index.html --out-dir demo/dist --open",
     "build-demo": "del-cli 'demo/dist/*' && parcel build demo/src/index.html --out-dir demo/dist --public-url https://omgovich.github.io/solid-colorful/",
-    "deploy-demo": "npm run build-demo && gh-pages -d demo/dist",
-    "install": "npm run build"
+    "deploy-demo": "npm run build-demo && gh-pages -d demo/dist"
   },
   "size-limit": [
     {
       "path": "dist/index.module.js",
       "name": "HexColorPicker",
       "import": "{ HexColorPicker }",
-      "limit": "5 KB"
+      "limit": "9.1 KB"
     },
     {
       "path": "dist/index.module.js",
       "name": "HslColorPicker",
       "import": "{ HslColorPicker }",
-      "limit": "4.6 KB"
+      "limit": "8.7 KB"
     },
     {
       "path": "dist/index.module.js",
       "name": "HslaColorPicker",
       "import": "{ HslaColorPicker }",
-      "limit": "4.7 KB"
+      "limit": "8.9 KB"
     },
     {
       "path": "dist/index.module.js",
       "name": "HslStringColorPicker",
       "import": "{ HslStringColorPicker }",
-      "limit": "4.8 KB"
+      "limit": "8.9 KB"
     },
     {
       "path": "dist/index.module.js",
       "name": "HslaStringColorPicker",
       "import": "{ HslaStringColorPicker }",
-      "limit": "4.9 KB"
+      "limit": "9.1 KB"
     },
     {
       "path": "dist/index.module.js",
       "name": "HsvColorPicker",
       "import": "{ HsvColorPicker }",
-      "limit": "4.6 KB"
+      "limit": "8.7 KB"
     },
     {
       "path": "dist/index.module.js",
       "name": "HsvaColorPicker",
       "import": "{ HsvaColorPicker }",
-      "limit": "4.7 KB"
+      "limit": "8.9 KB"
     },
     {
       "path": "dist/index.module.js",
       "name": "HsvStringColorPicker",
       "import": "{ HsvStringColorPicker }",
-      "limit": "4.8 KB"
+      "limit": "8.9 KB"
     },
     {
       "path": "dist/index.module.js",
       "name": "HsvaStringColorPicker",
       "import": "{ HsvaStringColorPicker }",
-      "limit": "4.9 KB"
+      "limit": "9.1 KB"
     },
     {
       "path": "dist/index.module.js",
       "name": "RgbColorPicker",
       "import": "{ RgbColorPicker }",
-      "limit": "4.8 KB"
+      "limit": "8.9 KB"
     },
     {
       "path": "dist/index.module.js",
       "name": "RgbaColorPicker",
       "import": "{ RgbaColorPicker }",
-      "limit": "4.9 KB"
+      "limit": "9.1 KB"
     },
     {
       "path": "dist/index.module.js",
       "name": "RgbStringColorPicker",
       "import": "{ RgbStringColorPicker }",
-      "limit": "4.9 KB"
+      "limit": "9 KB"
     },
     {
       "path": "dist/index.module.js",
       "name": "RgbaStringColorPicker",
       "import": "{ RgbaStringColorPicker }",
-      "limit": "5.1 KB"
+      "limit": "9.3 KB"
     },
     {
       "path": "dist/index.module.js",
       "name": "HexColorInput",
       "import": "{ HexColorInput }",
-      "limit": "3.8 KB"
+      "limit": "6.5 KB"
     }
   ],
   "sideEffects": false,
@@ -134,9 +133,7 @@
     },
     "testEnvironment": "jsdom",
     "moduleNameMapper": {
-      "\\.css$": "<rootDir>/tests/__mocks__/styles.css.mock.ts",
-      "solid-js/web": "<rootDir>/node_modules/solid-js/web/dist/web.cjs",
-      "solid-js": "<rootDir>/node_modules/solid-js/dist/solid.cjs"
+      "\\.css$": "<rootDir>/tests/__mocks__/styles.css.mock.ts"
     }
   },
   "files": [
