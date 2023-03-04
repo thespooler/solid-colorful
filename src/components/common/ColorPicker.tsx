@@ -25,8 +25,6 @@ export const ColorPicker = <T extends AnyColor>(props: Props<T>): JSX.Element =>
     localprops.onChange
   );
 
-  const nodeClassName = formatClassName(["solid-colorful", localprops.class]);
-
   createEffect(() => {
     if (props.color !== undefined) {
       const hsva = props.colorModel.toHsva(props.color);
@@ -35,7 +33,11 @@ export const ColorPicker = <T extends AnyColor>(props: Props<T>): JSX.Element =>
   });
 
   return (
-    <div {...otherprops} ref={nodeRef} class={nodeClassName}>
+    <div
+      {...otherprops}
+      ref={nodeRef}
+      class={formatClassName(["solid-colorful", localprops.class])}
+    >
       <Saturation hsva={hsva()} onChange={handleChange} />
       <Hue hue={hsva().h} onChange={handleChange} class="solid-colorful__last-control" />
     </div>

@@ -1,4 +1,4 @@
-import { createEffect, createMemo, JSX, splitProps } from "solid-js";
+import { createEffect, JSX, splitProps } from "solid-js";
 
 import { Hue } from "./Hue";
 import { Saturation } from "./Saturation";

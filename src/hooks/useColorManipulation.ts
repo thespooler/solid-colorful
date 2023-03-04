@@ -10,7 +10,7 @@ export function createColorManipulation<T extends AnyColor>(
   // No matter which color model is used (HEX, RGB(A) or HSL(A)),
   // all internal calculations are based on HSVA model
   const [hsva, updateHsva] = createSignal<HsvaColor>(colorModel.toHsva(color));
-  let cache = { color, hsva: hsva() };
+  let cache = { color, hsva: untrack(() => hsva()) };
 
   // Update local HSVA-value if `color` property value is changed,
   // but only if that's not the same color that we just sent to the parent
