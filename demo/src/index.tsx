@@ -57,11 +57,8 @@ const Demo = () => {
           <HeaderDemoPicker color={color()} onChange={setColor} />
         </HeaderDemo>
         <HeaderContent>
-          <HeaderTitle>React Colorful 🎨</HeaderTitle>
-          <HeaderDescription>
-            A tiny color picker component for React and Preact apps
-          </HeaderDescription>
-
+          <HeaderTitle>Solid Colorful 🎨</HeaderTitle>
+          <HeaderDescription>A tiny color picker component for SolidJS apps</HeaderDescription>
           <Links>
             <Link
               href="https://github.com/thespooler/solid-colorful"

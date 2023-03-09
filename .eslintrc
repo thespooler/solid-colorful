@@ -17,21 +17,6 @@
     "prettier"
   ],
   "rules": {
-    "prettier/prettier": "error",
-    "react/prop-types": [0]
-  },
-  "settings": {
-    "react": {
-      "version": "detect"
-    }
-  },
-  "overrides": [
-    {
-      "files": ["*.js"],
-      "rules": {
-        "@typescript-eslint/no-var-requires": [0],
-        "@typescript-eslint/explicit-module-boundary-types": [0]
-      }
-    }
-  ]
+    "prettier/prettier": "error"
+  }
 }
