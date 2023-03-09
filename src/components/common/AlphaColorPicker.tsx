@@ -5,9 +5,9 @@ import { Saturation } from "./Saturation";
 import { Alpha } from "./Alpha";
 
 import { ColorModel, ColorPickerBaseProps, AnyColor } from "../../types";
-import { createColorManipulation } from "../../hooks/useColorManipulation";
 import { useStyleSheet } from "../../hooks/useStyleSheet";
 import { formatClassName } from "../../utils/format";
+import { ColorManipulationProvider } from "../../hooks/ColorManipulationContext";
 
 interface Props<T extends AnyColor> extends Partial<ColorPickerBaseProps<T>> {
   colorModel: ColorModel<T>;
@@ -22,21 +22,21 @@ export const AlphaColorPicker = <T extends AnyColor>(props: Props<T>): JSX.Eleme
     if (nodeRef !== undefined) useStyleSheet(nodeRef);
   });
 
-  const [{ hsva }, { handleChange }] = createColorManipulation(
-    localprops.colorModel,
-    localprops.color || localprops.colorModel.defaultColor,
-    localprops.onChange
-  );
-
   return (
     <div
       {...otherprops}
       ref={nodeRef}
       class={formatClassName(["solid-colorful", localprops.class])}
     >
-      <Saturation hsva={hsva()} onChange={handleChange} />
-      <Hue hue={hsva().h} onChange={handleChange} />
-      <Alpha hsva={hsva()} onChange={handleChange} class="solid-colorful__last-control" />
+      <ColorManipulationProvider<T>
+        color={props.color || props.colorModel.defaultColor}
+        colormodel={props.colorModel}
+        onChange={props.onChange}
+      >
+        <Saturation />
+        <Hue />
+        <Alpha class="solid-colorful__last-control" />
+      </ColorManipulationProvider>
     </div>
   );
 };

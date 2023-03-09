@@ -5,22 +5,22 @@ import { hsvaToHslString } from "../../utils/convert";
 import { formatClassName } from "../../utils/format";
 import { clamp } from "../../utils/clamp";
 import { round } from "../../utils/round";
+import { useColorManipulationContext } from "../../hooks/ColorManipulationContext";
 
 interface Props {
   class?: string;
-  hue: number;
-  onChange: (newHue: { h: number }) => void;
 }
 
 const HueBase = (props: Props) => {
+  const { hsva, onChange } = useColorManipulationContext();
   const handleMove = (interaction: Interaction) => {
-    props.onChange({ h: 360 * interaction.left });
+    onChange({ h: 360 * interaction.left });
   };
 
   const handleKey = (offset: Interaction) => {
     // Hue measured in degrees of the color circle ranging from 0 to 360
-    props.onChange({
-      h: clamp(props.hue + offset.left * 360, 0, 360),
+    onChange({
+      h: clamp(hsva().h + offset.left * 360, 0, 360),
     });
   };
 
@@ -30,14 +30,14 @@ const HueBase = (props: Props) => {
         onMove={handleMove}
         onKey={handleKey}
         aria-label="Hue"
-        aria-valuenow={round(props.hue)}
+        aria-valuenow={round(hsva().h)}
         aria-valuemax="360"
         aria-valuemin="0"
       >
         <Pointer
           class="solid-colorful__hue-pointer"
-          left={props.hue / 360}
-          color={hsvaToHslString({ h: props.hue, s: 100, v: 100, a: 1 })}
+          left={hsva().h / 360}
+          color={hsvaToHslString({ h: hsva().h, s: 100, v: 100, a: 1 })}
         />
       </Interactive>
     </div>

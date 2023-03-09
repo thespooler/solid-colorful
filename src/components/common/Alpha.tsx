@@ -7,22 +7,21 @@ import { hsvaToHslaString } from "../../utils/convert";
 import { formatClassName } from "../../utils/format";
 import { clamp } from "../../utils/clamp";
 import { round } from "../../utils/round";
-import { HsvaColor } from "../../types";
+import { useColorManipulationContext } from "../../hooks/ColorManipulationContext";
 
 interface Props {
   class?: string;
-  hsva: HsvaColor;
-  onChange: (newAlpha: { a: number }) => void;
 }
 
 export const Alpha = (props: Props): JSX.Element => {
+  const { hsva, onChange } = useColorManipulationContext();
   const handleMove = (interaction: Interaction) => {
-    props.onChange({ a: interaction.left });
+    onChange({ a: interaction.left });
   };
 
   const handleKey = (offset: Interaction) => {
     // Alpha always fit into [0, 1] range
-    props.onChange({ a: clamp(props.hsva.a + offset.left) });
+    onChange({ a: clamp(hsva().a + offset.left) });
   };
 
   return (
@@ -30,23 +29,23 @@ export const Alpha = (props: Props): JSX.Element => {
       <div
         class="solid-colorful__alpha-gradient"
         style={{
-          "background-image": `linear-gradient(90deg, ${hsvaToHslaString({ ...props.hsva, a: 0 })},
-          ${hsvaToHslaString({ ...props.hsva, a: 1 })})`,
+          "background-image": `linear-gradient(90deg, ${hsvaToHslaString({ ...hsva(), a: 0 })},
+          ${hsvaToHslaString({ ...hsva(), a: 1 })})`,
         }}
       />
       <Interactive
         onMove={handleMove}
         onKey={handleKey}
         aria-label="Alpha"
-        aria-valuetext={`${round(props.hsva.a * 100)}%`}
-        aria-valuenow={round(props.hsva.a * 100)}
+        aria-valuetext={`${round(hsva().a * 100)}%`}
+        aria-valuenow={round(hsva().a * 100)}
         aria-valuemin="0"
         aria-valuemax="100"
       >
         <Pointer
           class="solid-colorful__alpha-pointer"
-          left={props.hsva.a}
-          color={hsvaToHslaString(props.hsva)}
+          left={hsva().a}
+          color={hsvaToHslaString(hsva())}
         />
       </Interactive>
     </div>
